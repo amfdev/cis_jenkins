@@ -94,11 +94,11 @@ def call(String platforms,
          def executeBuild, def executeTests, def executeDeploy, Map options) {
     
     try {
-        /*
+        
         properties([[$class: 'BuildDiscarderProperty', strategy: 
                      [$class: 'LogRotator', artifactDaysToKeepStr: '', 
                       artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10']]]);
-        */
+        
         timestamps {
             String PRJ_PATH="${options.PRJ_ROOT}/${options.PRJ_NAME}"
             String REF_PATH="${PRJ_PATH}/ReferenceImages"
@@ -133,10 +133,6 @@ def call(String platforms,
                     String gpuNames = tokens.get(1)
                     echo "${osName}"
                     echo "${gpuNames}"
-                    /*
-                    def (osName, gpuNames) = it.tokenize(':')
-                    echo "${osName}"
-                    echo "${gpuNames}"
                     if(gpuNames)
                     {
                         gpuNames.split(',').each()
@@ -145,8 +141,6 @@ def call(String platforms,
                             testResultList << "testResult-${asicName}-${osName}"
                         }
                     }
-                    */
-
                     tasks[osName]=executePlatform(osName, gpuNames, executeBuild, executeTests, executeDeploy, options)
                 }
                 
