@@ -69,18 +69,25 @@ def platformTask(String target, List profileList, Map options)
 {
     def retNode =  
     {
-        executeBuild(target, options)
+       try {
+           executeBuild(target, options)
 
-        if(profileList.size())
-        {
-            def tasks = [:]
-            profileList.each()
+            if(profileList.size())
             {
-                String profile = it
-                def taskName, taskBody = testTask(target, it, options)
-                testTasks[taskName] = taskBody
+                def tasks = [:]
+                profileList.each()
+                {
+                    String profile = it
+                    def taskName, taskBody = testTask(target, it, options)
+                    testTasks[taskName] = taskBody
+                }
+                parallel tasks
             }
-            parallel tasks
+        }
+        catch (e) {
+            println(e.toString());
+            println(e.getMessage());
+            throw e
         }
     }
     return retNode
