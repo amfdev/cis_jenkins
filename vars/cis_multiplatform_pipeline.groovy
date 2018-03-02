@@ -47,25 +47,13 @@ def executeBuild(String target, Map options)
     String taskTag = options.get("${taskType}.tag", "${taskType}")
     List nodeTags = [] << taskTag << target
  
-    echo "execute ${taskName}"
-    
-    echo options.toString()
-    echo "${taskType}.function"
-    
     def executeFunction = options.get("${taskType}.function.${target}")
-    echo "1"
     if(!executeFunction)
-        executeFunction = options.get("${taskType}_function")
-    echo "2"
-    echo "${executeFunction}"
+        executeFunction = options.get("${taskType}.function")
     if(!executeFunction)
     {
         error "${taskType}.function is not defined for target ${target}"
     }
-    echo "3"
-    
-    executeFunction(target, options)
-    echo "4"
     executeNode(taskType, taskName, nodeTags.join(" && "), { executeFunction(target, options) })
 }
 
