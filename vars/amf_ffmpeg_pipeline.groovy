@@ -121,21 +121,25 @@ def executeDeploy(Map options, List testResultList)
 
 def call(String projectBranch = "", 
          String platforms = 'mingw_gcc_x64,mingw_gcc_x86,mingw_msvc_x64,mingw_msvc_x86', 
-         String PRJ_ROOT='AMF',
-         String PRJ_NAME='AMF-FFmpeg',
+         String projectGroup='AMF',
+         String projectName='AMF-FFmpeg',
          String projectRepo='https://github.com/amfdev/FFmpeg.git',
          Boolean updateRefs = false, 
          Boolean enableNotifications = false) {
     
     cis_multiplatform_pipeline(platforms, this.&executeBuild, this.&executeTests, this.&executeDeploy, 
-                           [projectBranch:projectBranch,
-                            updateRefs:updateRefs, 
-                            enableNotifications:false,
-                            PRJ_NAME:PRJ_NAME,
-                            PRJ_ROOT:PRJ_ROOT,
+                           [
+                            projectBranch:projectBranch,
                             projectRepo:projectRepo,
-                            executeBuild:this.&executeBuild,
-                            BUILDER_TAG:'BuilderAMF'
-                            DEPLOYER_TAG:'DeployerAMF'
+                            projectGroup:projectGroup,
+                            projectName:projectName,
+                               
+                            'build.function':this.&executeBuild,
+                            'test.function':this.&executeTest,
+                            'deploy.function':this.&executeDeploy,
+                               
+                            'build.tag':'BuilderAMF'
+                            'test.tag':'Tester'
+                            'deploy.tag':'DeployerAMF'
                            ])
 }
