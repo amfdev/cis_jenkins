@@ -3,13 +3,13 @@ def logEnvironmentInfo()
 {
     if(isUnix())
     {
-         sh "uname -a   >  ${CIS_LOG}.log"
-         sh "env        >> ${CIS_LOG}.log"
+         sh "uname -a   >  ${CIS_LOG}"
+         sh "env        >> ${CIS_LOG}"
     }
     else
     {
-         bat "HOSTNAME  >  ${CIS_LOG}.log"
-         bat "set       >> ${CIS_LOG}.log"
+         bat "HOSTNAME  >  ${CIS_LOG}"
+         bat "set       >> ${CIS_LOG}"
     }
 }
 
@@ -32,7 +32,7 @@ def executeNode(String taskType, String taskName, String nodeTags, def executeFu
                         throw e
                     }
                     finally {
-                        stash "${CIS_LOG}.log" "log${taskName}"
+                        stash "${CIS_LOG}" "log${taskName}"
                     }
                 }
             }
