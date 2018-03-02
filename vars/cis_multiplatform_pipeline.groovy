@@ -128,6 +128,7 @@ def call(String platforms,
                 platforms.split(';').each()
                 {
                     echo "${it}"
+                    List tokens = it.tokenize(':')
                     /*
                     def (osName, gpuNames) = it.tokenize(':')
                     echo "${osName}"
