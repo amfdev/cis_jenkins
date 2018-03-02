@@ -42,7 +42,7 @@ def executeNode(String taskType, String taskName, String nodeTags, def executeFu
 
 def executeBuild(String target, Map options)
 {
-    def executeFunction2 = options.get('build.function')
+    def executeFunction2 = options.get("build.function")
     executeFunction2("asdasd1", options)
     
     String taskType = "build"
