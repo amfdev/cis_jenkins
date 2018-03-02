@@ -22,19 +22,23 @@ def call(String projectBranch = "",
          Boolean updateRefs = false, 
          Boolean enableNotifications = false) {
 
-    cis_multiplatform_pipeline(config,
-                           [
-                            projectBranch:projectBranch,
-                            projectRepo:projectRepo,
-                            projectGroup:projectGroup,
-                            projectName:projectName,
+    Map options = [
+        projectBranch:projectBranch,
+        projectRepo:projectRepo,
+        projectGroup:projectGroup,
+        projectName:projectName,
 
-                            build_function:this.&executeBuild,
-                            'test.function':this.&executeTest,
-                            'deploy.function':this.&executeDeploy,
+        'build.function':this.&executeBuild,
+        'test.function':this.&executeTest,
+        'deploy.function':this.&executeDeploy,
 
-                            'build.tag':'BuilderAMF',
-                            'test.tag':'Tester',
-                            'deploy.tag':'DeployerAMF'
-                           ])
+        'build.tag':'BuilderAMF',
+        'test.tag':'Tester',
+        'deploy.tag':'DeployerAMF'
+    ]
+    
+    def executeFunction = options.get('build.function')
+    echo "${executeFunction}"
+
+    cis_multiplatform_pipeline(config, options)
 }
