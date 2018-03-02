@@ -140,7 +140,7 @@ def call(String configString, Map options) {
             }
             finally
             {
-                executeDeploy()
+                executeDeploy(configMap, options)
             }
         }
     }
