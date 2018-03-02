@@ -38,7 +38,7 @@ def call(String projectBranch = "",
     ]
     
     def executeFunction = options.get('build.function')
-    echo "${executeFunction}"
+    executeFunction("asdasd", options)
 
     cis_multiplatform_pipeline(config, options)
 }
