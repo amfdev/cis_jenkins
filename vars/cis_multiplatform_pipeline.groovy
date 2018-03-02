@@ -54,6 +54,9 @@ def executeBuild(String target, Map options)
         executeFunction = options.get("${taskType}.function", null)
     if(!executeFunction)
         throw Exception("${taskType}.function is not defined for target ${target}")
+    
+    executeFunction(target, options)
+    
     executeNode(taskType, taskName, nodeTags.join(" && "), { executeFunction(target, options) })
 }
 
