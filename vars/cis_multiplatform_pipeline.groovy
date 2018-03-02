@@ -49,11 +49,11 @@ def executeBuild(String target, Map options)
  
     echo "execute ${taskName}"
     
-    def executeFunction = options.get('${taskType}.function.${target}', null)
+    def executeFunction = options.get("${taskType}.function.${target}", null)
     if(!executeFunction)
-        executeFunction = options.get('${taskType}.function', null)
+        executeFunction = options.get("${taskType}.function", null)
     if(!executeFunction)
-        throw new Exception("${taskType}.function is not defined for target ${target}")
+        throw Exception("${taskType}.function is not defined for target ${target}")
     executeNode(taskType, taskName, nodeTags.join(" && "), { executeFunction(target, options) })
 }
 
