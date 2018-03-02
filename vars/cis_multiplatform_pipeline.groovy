@@ -32,7 +32,7 @@ def executeNode(String taskType, String taskName, String nodeTags, def executeFu
                         throw e
                     }
                     finally {
-                        stash "${CIS_LOG}" "log${taskName}"
+                        stash "${env.CIS_LOG}" "log${taskName}"
                     }
                 }
             }
