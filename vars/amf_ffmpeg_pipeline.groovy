@@ -127,7 +127,7 @@ def call(String projectBranch = "",
          Boolean updateRefs = false, 
          Boolean enableNotifications = false) {
 
-    multiplatform_pipeline(platforms, this.&executeBuild, this.&executeTests, null, 
+    cis_multiplatform_pipeline(platforms, this.&executeBuild, this.&executeTests, null, 
                            [projectBranch:projectBranch,
                             updateRefs:updateRefs, 
                             enableNotifications:false,
