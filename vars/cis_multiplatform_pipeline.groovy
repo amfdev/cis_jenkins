@@ -59,7 +59,7 @@ def executeBuild(String target, Map options)
     {
         error "${taskType}.function is not defined for target ${target}"
     }
-    executeNode(taskType, taskName, nodeTags.join(" && "), { executeFunction(target, options) })
+    executeNode(taskType, taskName, nodeTags.join(" && "), { executeFunction(target, options) }, options)
 }
 
 def testTask(String target, String profile, Map options)
