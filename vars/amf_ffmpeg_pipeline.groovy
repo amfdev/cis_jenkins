@@ -89,8 +89,8 @@ def executeBuildLinux()
 def executeBuild(String osName, Map options)
 {
     try {
-        checkOutBranchOrScm(options['projectBranch'], options['projectRepo'])
-        outputEnvironmentInfo(osName)
+        //checkOutBranchOrScm(options['projectBranch'], options['projectRepo'])
+        //outputEnvironmentInfo(osName)
 
         switch(osName)
         {
@@ -104,7 +104,7 @@ def executeBuild(String osName, Map options)
             executeBuildLinux();
         }
         
-        stash includes: 'amf/bin/**/*', excludes: 'bin/obj', name: "app${osName}"
+        //stash includes: 'amf/bin/**/*', excludes: 'bin/obj', name: "app${osName}"
     }
     catch (e) {
         currentBuild.result = "FAILED"
@@ -126,7 +126,9 @@ def call(String projectBranch = "",
          String projectRepo='https://github.com/amfdev/FFmpeg.git',
          Boolean updateRefs = false, 
          Boolean enableNotifications = false) {
-
+    
+    cis_test()
+/*
     cis_multiplatform_pipeline(platforms, this.&executeBuild, this.&executeTests, null, 
                            [projectBranch:projectBranch,
                             updateRefs:updateRefs, 
@@ -136,4 +138,5 @@ def call(String projectBranch = "",
                             projectRepo:projectRepo,
                             BUILDER_TAG:'BuilderS'
                            ])
+                           */
 }
