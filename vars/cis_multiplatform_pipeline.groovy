@@ -123,7 +123,7 @@ def call(String platforms,
             try {
                 
                 def tasks = [:]
-
+/*
                 platforms.split(';').each()
                 {
                     def (osName, gpuNames) = it.tokenize(':')
@@ -138,6 +138,7 @@ def call(String platforms,
 
                     //tasks[osName]=executePlatform(osName, gpuNames, executeBuild, executeTests, executeDeploy, options)
                 }
+                */
                 //parallel tasks
                 
             }
