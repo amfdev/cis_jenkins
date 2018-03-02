@@ -44,12 +44,16 @@ def readOption(Map options, String key)
 {
     return options.get(key)
 }
-
+def readOption(Map options, String key, def defaultValue)
+{
+    return options.get(key, defaultValue)
+}
 def executeBuild(String target, Map options)
 {
     String taskType = "build"
     String taskName = "${taskType}-${target}"
-    List nodeTags = [] << readOption(options, "${taskType}.tag") << target
+    List nodeTags = [] << readOption(options, "${taskType}.tag") 
+        << readOption(options, "test.platform.tag.${target}", target)
 
     def executeFunction = readOption(options, "${taskType}.function.${target}")
     if(!executeFunction)
