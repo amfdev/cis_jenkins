@@ -144,7 +144,6 @@ def call(String configString, Map options) {
     catch (e) {
         println(e.toString());
         println(e.getMessage());
-        println(e.getStackTrace());
         currentBuild.result = "FAILED"
         throw e
     }
