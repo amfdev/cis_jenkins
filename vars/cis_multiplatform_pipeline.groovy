@@ -18,7 +18,7 @@ def executeNode(String taskType, String taskName, String nodeTags, def executeFu
     node(nodeTags) {
         stage(taskName) {
             ws("WS/${options.projectName}_${taskType}") {
-                withEnv("CIS_LOG=${WORKSPACE}/${taskName}.log") {
+                withEnv(["CIS_LOG=${WORKSPACE}/${taskName}.log"]) {
                     try {
                         if(options.get("${taskType}.cleandir", false) == true) {
                             deleteDir()
