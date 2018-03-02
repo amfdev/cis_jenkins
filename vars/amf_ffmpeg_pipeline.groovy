@@ -37,8 +37,5 @@ def call(String projectBranch = "",
         'deploy.tag':'DeployerAMF'
     ]
     
-    def executeFunction = options.get('build.function')
-    executeFunction("asdasd", options)
-
     cis_multiplatform_pipeline(config, options)
 }
