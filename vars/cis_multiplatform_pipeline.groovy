@@ -47,8 +47,8 @@ def executeBuild(String target, Map options)
     String taskTag = options.get("${taskType}.tag", "${taskType}")
     List nodeTags = [] << taskTag << target
 
-    String s = "${taskType}.function"
-    def executeFunction2 = options.get(s)
+
+    def executeFunction2 = options.get(String("${taskType}.function"))
     executeFunction2("asdasd1", options)
     
     
