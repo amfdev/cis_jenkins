@@ -128,8 +128,8 @@ def call(String projectBranch = "",
          Boolean enableNotifications = false) {
     
     cis_test()
-/*
-    cis_multiplatform_pipeline(platforms, this.&executeBuild, this.&executeTests, null, 
+
+    cis_multiplatform_pipeline(platforms, this.&executeBuild, this.&executeTests, this.&executeDeploy, 
                            [projectBranch:projectBranch,
                             updateRefs:updateRefs, 
                             enableNotifications:false,
@@ -138,5 +138,4 @@ def call(String projectBranch = "",
                             projectRepo:projectRepo,
                             BUILDER_TAG:'BuilderS'
                            ])
-                           */
 }
