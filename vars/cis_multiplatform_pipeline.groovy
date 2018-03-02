@@ -40,6 +40,11 @@ def executeNode(String taskType, String taskName, String nodeTags, def executeFu
     }
 }
 
+def readOption(Map options, String key, def default = null)
+{
+    return options.get(key, default)
+}
+
 def executeBuild(String target, Map options)
 {
     String taskType = "build"
@@ -48,7 +53,7 @@ def executeBuild(String target, Map options)
     List nodeTags = [] << taskTag << target
 
 
-    def executeFunction2 = options.get(String("${taskType}.function"))
+    def executeFunction2 = readOption(options, "${taskType}.function")
     executeFunction2("asdasd1", options)
     
     
