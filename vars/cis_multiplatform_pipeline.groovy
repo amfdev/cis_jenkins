@@ -116,13 +116,15 @@ def call(String configString, Map options) {
             {
                 List tokens = it.tokenize(':')
                 String target = tokens.get(0)
-                String profiles = tokens.get(1)
                 configMap[target] = []
-            
-                profiles.split(',').each()
+                if(tokens.size() > 1)
                 {
-                    String profile = it
-                    configMap[target] << profile
+                    String profiles = tokens.get(1)
+                    profiles.split(',').each()
+                    {
+                        String profile = it
+                        configMap[target] << profile
+                    }
                 }
             }
             
