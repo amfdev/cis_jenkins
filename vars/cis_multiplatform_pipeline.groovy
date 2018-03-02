@@ -40,9 +40,9 @@ def executeNode(String taskType, String taskName, String nodeTags, def executeFu
     }
 }
 
-def readOption(Map options, String key, def defaultValue = null)
+def readOption(Map options, String key)
 {
-    return options.get(key, defaultValue)
+    return options.get(key)
 }
 
 def executeBuild(String target, Map options)
@@ -52,14 +52,9 @@ def executeBuild(String target, Map options)
     String taskTag = options.get("${taskType}.tag", "${taskType}")
     List nodeTags = [] << taskTag << target
 
-
-    def executeFunction2 = readOption(options, "${taskType}.function")
-    executeFunction2("asdasd1", options)
-    
-    
-    def executeFunction = options.get("${taskType}.function.${target}")
+    def executeFunction = readOption(options, "${taskType}.function.${target}")
     if(!executeFunction)
-        executeFunction = options.get("${taskType}.function")
+        executeFunction = readOption(options, "${taskType}.function")
     if(!executeFunction)
     {
         error "${taskType}.function is not defined for target ${target}"
