@@ -83,7 +83,7 @@ def platformTask(String target, List profileList, Map options)
        try {
            executeBuild(target, options)
 
-            if(profileList.size())
+            if(profileList && profileList.size())
             {
                 def tasks = [:]
                 profileList.each()
