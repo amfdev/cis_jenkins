@@ -54,8 +54,6 @@ def executeBuild(String target, Map options)
     String taskName = "${taskType}-${target}"
     List nodeTags = [] << readOption(options, "${taskType}.tag") 
     nodeTags << readOption(options, "build.platform.tag.${target}", target)
-
-    echo nodeTags.toString()
     
     def executeFunction = readOption(options, "${taskType}.function.${target}")
     if(!executeFunction)
@@ -69,8 +67,22 @@ def executeBuild(String target, Map options)
 
 def testTask(String target, String profile, Map options)
 {
+    String taskType = "test"
+    String taskName = "${taskType}-${target}-${profile}"
+    List nodeTags = [] << readOption(options, "${taskType}.tag") 
+    nodeTags << readOption(options, "test.platform.tag.${target}", target)
+    nodeTags << profile
+    
+    def executeFunction = readOption(options, "${taskType}.function.${target}")
+    if(!executeFunction)
+        executeFunction = readOption(options, "${taskType}.function")
+    if(!executeFunction)
+    {
+        error "${taskType}.function is not defined for target ${target}"
+    }
+
     def ret = {
-        echo "testTask ${target} ${profile}"
+        executeNode(taskType, taskName, nodeTags.join(" && "), { executeFunction(target, profile, options) }, options)
     }
     return ret
 }
@@ -109,7 +121,7 @@ def executeDeploy(Map configMap, Map options)
     if(!executeFunction)
         return
 
-    executeNode("Deploy", "Deploy", "Deploy", { executeFunction(configMap, options) })
+    executeNode("Deploy", "Deploy", "Deploy", { executeFunction(configMap, options) }, options)
 }
 
 def call(String configString, Map options) {
