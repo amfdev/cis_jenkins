@@ -15,14 +15,14 @@ def executeDeploy(Map configMap, Map options)
 }
 
 def call(String projectBranch = "", 
-         String platforms = 'mingw_gcc_x64,mingw_gcc_x86,mingw_msvc_x64,mingw_msvc_x86', 
+         String config = 'mingw_gcc_x64,mingw_gcc_x86,mingw_msvc_x64,mingw_msvc_x86', 
          String projectGroup='AMF',
          String projectName='AMF-FFmpeg',
          String projectRepo='https://github.com/amfdev/FFmpeg.git',
          Boolean updateRefs = false, 
          Boolean enableNotifications = false) {
 
-    cis_multiplatform_pipeline(platforms, this.&executeBuild, this.&executeTests, this.&executeDeploy, 
+    cis_multiplatform_pipeline(config,
                            [
                             projectBranch:projectBranch,
                             projectRepo:projectRepo,
