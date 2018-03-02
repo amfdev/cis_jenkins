@@ -117,11 +117,15 @@ def platformTask(String target, List profileList, Map options)
 
 def executeDeploy(Map configMap, Map options)
 {
-    def executeFunction = options.get('${deploy.function}', null)
+    String taskType = "deploy"
+    String taskName = "deploy"
+
+    if(!executeFunction)
+        executeFunction = readOption(options, "${taskType}.function")
     if(!executeFunction)
         return
 
-    executeNode("Deploy", "Deploy", "Deploy", { executeFunction(configMap, options) }, options)
+    executeNode(taskType, taskName, "Deploy", { executeFunction(configMap, options) }, options)
 }
 
 def call(String configString, Map options) {
