@@ -128,7 +128,7 @@ def call(String platforms,
                 platforms.split(';').each()
                 {
                     echo "${it}"
-                    
+                    /*
                     def (osName, gpuNames) = it.tokenize(':')
                     echo "${osName}"
                     echo "${gpuNames}"
@@ -140,6 +140,7 @@ def call(String platforms,
                             testResultList << "testResult-${asicName}-${osName}"
                         }
                     }
+                    */
 
                     tasks[osName]=executePlatform(osName, gpuNames, executeBuild, executeTests, executeDeploy, options)
                 }
