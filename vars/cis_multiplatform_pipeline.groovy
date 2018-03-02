@@ -93,7 +93,7 @@ def executePlatform(String osName, String gpuNames, def executeBuild, def execut
 def call(String platforms, 
          def executeBuild, def executeTests, def executeDeploy, Map options) {
     
-    try {/*
+    try {
         properties([[$class: 'BuildDiscarderProperty', strategy: 
                      [$class: 'LogRotator', artifactDaysToKeepStr: '', 
                       artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10']]]);
@@ -169,7 +169,7 @@ def call(String platforms,
                     }
                 }
             }
-        }*/
+        }
     }
     catch (e) {
         println(e.toString());
