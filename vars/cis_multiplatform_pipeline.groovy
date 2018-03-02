@@ -104,6 +104,9 @@ def executeDeploy(Map configMap, Map options)
 
 def call(String configString, Map options) {
     
+    def executeFunction = options.get('build.function')
+    executeFunction("asdasd", options)
+    
     try {
         
         properties([[$class: 'BuildDiscarderProperty', strategy: 
