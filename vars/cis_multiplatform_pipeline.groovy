@@ -17,30 +17,33 @@ def executeBuild(String target, Map options)
 {
     String taskType = "build"
     String taskName = "${taskType}-${target}"
-    node("${target} && ${options.BUILDER_TAG}") {
+    String taskTag = options.get("${taskType}.tag", "${taskType}")
+    List nodeTags = [] << taskTag << target
+    
+    def executeFunction = options.get('${taskType}.function.${target}', null)
+    if(!executeFunction)
+        executeFunction = options.get('${taskType}.function', null)
+    if(!executeFunction)
+        throw new Exception("${taskType}.function is not defined for target ${target}")
+    
+    node(nodeTags.join(" && ")) {
         stage(taskName) {
-            ws("WS/${options.PRJ_NAME}_Build") {
+            ws("WS/${options.PRJ_NAME}_${taskType}") {
                 withEnv("CIS_LOG=${WORKSPACE}/${taskName}.log") {
                     try {
-                        if(options.get('build.cleandir', false) == true) {
+                        if(options.get("${taskType}.cleandir", false) == true) {
                             deleteDir()
                         }
 
                         logEnvironmentInfo()
-
-                        def executeFunction = options.get('build.function.${target}', null)
-                        if(!executeFunction)
-                            executeFunction = options.get('build.function', null)
-                        if(!executeFunction)
-                            throw new Exception("build.function is not defined for target ${target}")
                         executeFunction(target, options)
                     }
                     catch (e) {
-                        currentBuild.result = "BUILD FAILED"
+                        currentBuild.result = "${taskType} failed"
                         throw e
                     }
                     finally {
-                        stash "${LOG_PATH}.log" "log-Build-${osName}"
+                        stash "${LOG_PATH}.log" "log${taskName}"
                     }
                 }
             }
@@ -67,9 +70,9 @@ def testTask(String target, String profile, Map options)
                             logEnvironmentInfo()
 
                             def executeFunction = options.get('${target}', null)
-                            if(!executeBuild)
+                            if(!executeFunction)
                                 throw new Exception("executeBuild is not defined for target ${target}")
-                            executeBuild(target, options)
+                            executeFunction(target, options)
                         }
                         catch (e) {
                             currentBuild.result = "BUILD FAILED"
