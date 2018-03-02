@@ -123,10 +123,15 @@ def call(String platforms,
             try {
                 
                 def tasks = [:]
-/*
+
+                echo "${platforms}"
                 platforms.split(';').each()
                 {
+                    echo "${it}"
+                    
                     def (osName, gpuNames) = it.tokenize(':')
+                    echo "${osName}"
+                    echo "${gpuNames}"
                     if(gpuNames)
                     {
                         gpuNames.split(',').each()
@@ -136,10 +141,10 @@ def call(String platforms,
                         }
                     }
 
-                    //tasks[osName]=executePlatform(osName, gpuNames, executeBuild, executeTests, executeDeploy, options)
+                    tasks[osName]=executePlatform(osName, gpuNames, executeBuild, executeTests, executeDeploy, options)
                 }
-                */
-                //parallel tasks
+                
+                parallel tasks
                 
             }
             finally
