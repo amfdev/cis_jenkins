@@ -120,8 +120,8 @@ def executeDeploy(Map options, List testResultList)
 }
 
 def call(String projectBranch = "", 
-         String platforms = 'Windows:AMD_RXVEGA,AMD_WX9100,AMD_WX7100', 
-         String PRJ_ROOT='amf-core',
+         String platforms = 'mingw_gcc_x64,mingw_gcc_x86,mingw_msvc_x64,mingw_msvc_x86', 
+         String PRJ_ROOT='AMF',
          String PRJ_NAME='AMF-FFmpeg',
          String projectRepo='https://github.com/amfdev/FFmpeg.git',
          Boolean updateRefs = false, 
@@ -134,6 +134,7 @@ def call(String projectBranch = "",
                             PRJ_NAME:PRJ_NAME,
                             PRJ_ROOT:PRJ_ROOT,
                             projectRepo:projectRepo,
+                            executeBuild:this.&executeBuild,
                             BUILDER_TAG:'BuilderAMF'
                             DEPLOYER_TAG:'DeployerAMF'
                            ])
