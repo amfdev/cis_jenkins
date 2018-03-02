@@ -123,7 +123,7 @@ def call(String configString, Map options) {
                       artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10']]]);
         
         timestamps {
-            String PRJ_PATH="${options.PRJ_ROOT}/${options.PRJ_NAME}"
+            String PRJ_PATH="${options.projectGroup}/${options.projectName}"
             String REF_PATH="${PRJ_PATH}/ReferenceImages"
             String JOB_PATH="${PRJ_PATH}/${JOB_NAME}/Build-${BUILD_ID}".replace('%2F', '_')
             options['PRJ_PATH']="${PRJ_PATH}"
