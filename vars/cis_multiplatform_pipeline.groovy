@@ -3,9 +3,8 @@ def executePlatform(String osName, String gpuNames, def executeBuild, def execut
 {
     def retNode =  
     {
-        /*
         try {
-            node("${osName} && ${options.BUILDER_TAG}")
+            node("${osName} && ${options.BUILD_TAG}")
             {
                 stage("Build-${osName}")
                 {
@@ -85,7 +84,6 @@ def executePlatform(String osName, String gpuNames, def executeBuild, def execut
             currentBuild.result = "FAILED"
             throw e
         }
-        */
     }
     return retNode
 }
