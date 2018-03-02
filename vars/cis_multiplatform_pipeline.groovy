@@ -51,14 +51,13 @@ def executeBuild(String target, Map options)
     
     echo options.toString()
     echo "${taskType}.function"
-
     
     def executeFunction = options.get("${taskType}.function.${target}")
     echo "1"
     if(!executeFunction)
         executeFunction = options.get("${taskType}.function")
     echo "2"
-    echo "${taskType}.function"
+    echo "${executeFunction}"
     if(!executeFunction)
     {
         error "${taskType}.function is not defined for target ${target}"
