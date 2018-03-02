@@ -136,9 +136,9 @@ def call(String platforms,
                         }
                     }
 
-                    tasks[osName]=executePlatform(osName, gpuNames, executeBuild, executeTests, executeDeploy, options)
+                    //tasks[osName]=executePlatform(osName, gpuNames, executeBuild, executeTests, executeDeploy, options)
                 }
-                parallel tasks
+                //parallel tasks
                 
             }
             finally
