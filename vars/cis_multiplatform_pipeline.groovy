@@ -106,17 +106,24 @@ def call(String platforms,
             options['PRJ_PATH']="${PRJ_PATH}"
             options['REF_PATH']="${REF_PATH}"
             options['JOB_PATH']="${JOB_PATH}"
-            if(options.get('BUILDER_TAG', '') == '')
-                options['BUILDER_TAG'] = 'BuildAMF'
+            
+            if(options.get('BUILD_TAG', '') == '')
+                options['BUILDER_TAG'] = 'Build'
 
             if(options.get('DEPLOY_TAG', '') == '')
-                options['DEPLOY_TAG'] = 'DeployAMF'
+                options['DEPLOY_TAG'] = 'Deploy'
 
-            if(options.get('TESTER_TAG', '') == '')
-                options['TESTER_TAG'] = 'TestAMF'
+            if(options.get('TEST_TAG', '') == '')
+                options['TEST_TAG'] = 'Test'
 
-            if(options.get('cleanDirs', '') == '')
-                options['cleanDirs'] = 'false'
+            if(options.get('BUILD_CLEAN', '') == '')
+                options['BUILD_CLEAN'] = 'false'
+
+            if(options.get('TEST_CLEAN', '') == '')
+                options['TEST_CLEAN'] = 'false'
+            
+            if(options.get('DEPLOY_CLEAN', '') == '')
+                options['DEPLOY_CLEAN'] = 'true'
             
             def testResultList = [];
 
