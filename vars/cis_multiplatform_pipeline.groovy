@@ -42,6 +42,9 @@ def executeNode(String taskType, String taskName, String nodeTags, def executeFu
 
 def executeBuild(String target, Map options)
 {
+    def executeFunction = options.get('build.function')
+    executeFunction("asdasd1", options)
+    
     String taskType = "build"
     String taskName = "${taskType}-${target}"
     String taskTag = options.get("${taskType}.tag", "${taskType}")
@@ -103,9 +106,6 @@ def executeDeploy(Map configMap, Map options)
 }
 
 def call(String configString, Map options) {
-    
-    def executeFunction = options.get('build.function')
-    executeFunction("asdasd", options)
     
     try {
         
