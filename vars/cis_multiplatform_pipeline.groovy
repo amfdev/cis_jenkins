@@ -13,20 +13,9 @@ def logEnvironmentInfo()
     }
 }
 
-def executeBuild(String target, Map options)
+def executeNode(String taskType, String taskName, String nodeTags, def executeFunction, Map options)
 {
-    String taskType = "build"
-    String taskName = "${taskType}-${target}"
-    String taskTag = options.get("${taskType}.tag", "${taskType}")
-    List nodeTags = [] << taskTag << target
-    
-    def executeFunction = options.get('${taskType}.function.${target}', null)
-    if(!executeFunction)
-        executeFunction = options.get('${taskType}.function', null)
-    if(!executeFunction)
-        throw new Exception("${taskType}.function is not defined for target ${target}")
-    
-    node(nodeTags.join(" && ")) {
+    node(nodeTags) {
         stage(taskName) {
             ws("WS/${options.PRJ_NAME}_${taskType}") {
                 withEnv("CIS_LOG=${WORKSPACE}/${taskName}.log") {
@@ -36,7 +25,7 @@ def executeBuild(String target, Map options)
                         }
 
                         logEnvironmentInfo()
-                        executeFunction(target, options)
+                        executeFunction()
                     }
                     catch (e) {
                         currentBuild.result = "${taskType} failed"
@@ -51,65 +40,45 @@ def executeBuild(String target, Map options)
     }
 }
 
+def executeBuild(String target, Map options)
+{
+    String taskType = "build"
+    String taskName = "${taskType}-${target}"
+    String taskTag = options.get("${taskType}.tag", "${taskType}")
+    List nodeTags = [] << taskTag << target
+    
+    def executeFunction = options.get('${taskType}.function.${target}', null)
+    if(!executeFunction)
+        executeFunction = options.get('${taskType}.function', null)
+    if(!executeFunction)
+        throw new Exception("${taskType}.function is not defined for target ${target}")
+    executeNode(taskType, taskName, nodeTags.join(" && "), { executeFunction(target, options) })
+}
+
 def testTask(String target, String profile, Map options)
 {
-    String taskType = "Test"
-    String taskName = "${taskType}-${target}-${profile}"
     def ret = {
-        node("${target} && ${profile} && ${options.TESTER_TAG}") {
-            stage(taskName)
-            {
-                ws("WS/${options.PRJ_NAME}_Test")
-                {
-                    withEnv("CIS_LOG=${WORKSPACE}/${taskName}.log") {
-                        try
-                        {
-                            if(options['CLEAN_TEST_DIR'] == true)
-                                deleteDir()
-
-                            logEnvironmentInfo()
-
-                            def executeFunction = options.get('${target}', null)
-                            if(!executeFunction)
-                                throw new Exception("executeBuild is not defined for target ${target}")
-                            executeFunction(target, options)
-                        }
-                        catch (e) {
-                            currentBuild.result = "BUILD FAILED"
-                            throw e
-                        }
-                        finally {
-                            //archiveArtifacts "${STAGE_NAME}.log"
-                        }
-                    }
-                }
-            }
-        }
+        echo "testTask ${target} ${profile}"
     }
+    return ret
 }
 
 def platformTask(String target, List profileList, Map options)
 {
     def retNode =  
     {
-        try {
-            executeBuild(target, options)
-            
-            if(profileList.size())
+        executeBuild(target, options)
+
+        if(profileList.size())
+        {
+            def tasks = [:]
+            profileList.each()
             {
-                def tasks = [:]
-                profileList.each()
-                {
-                    String profile = it
-                    taksName, taskBody = testTask(target, it, options)
-                    testTasks[taksName] = taskBody
-                }
-                parallel tasks
+                String profile = it
+                taksName, taskBody = testTask(target, it, options)
+                testTasks[taksName] = taskBody
             }
-        }
-        catch (e) {
-            println(e.getMessage());
-            currentBuild.result = "TEST FAILED"
+            parallel tasks
         }
     }
     return retNode
@@ -117,31 +86,11 @@ def platformTask(String target, List profileList, Map options)
 
 def executeDeploy(Map configMap, Map options)
 {
-    def deployFunction = options.get('${deploy.function}', null)
-    if(!deployFunction)
+    def executeFunction = options.get('${deploy.function}', null)
+    if(!executeFunction)
         return
 
-    node("${options.DEPLOYER_TAG}")
-    {
-        stage("Deploy")
-        {
-            ws("WS/${options.PRJ_NAME}_Deploy")
-            {
-                try
-                {
-                    if(options['CLEAN_DEPLOY_DIR'] == true)
-                    {
-                        deleteDir()
-                    }
-                    deployFunction(configMap, options)
-                }
-                catch (e) {
-                    println(e.getMessage());
-                    currentBuild.result = "DEPLOY FAILED"
-                }
-            }
-        }
-    }
+    executeNode("Deploy", "Deploy", "Deploy", { executeFunction(configMap, options) })
 }
 
 def call(String configString, Map options) {
@@ -160,23 +109,6 @@ def call(String configString, Map options) {
             options['REF_PATH']="${REF_PATH}"
             options['JOB_PATH']="${JOB_PATH}"
             
-            if(options.get('BUILDER_TAG', '') == '')
-                options['BUILDER_TAG'] = 'Builder'
-
-            if(options.get('DEPLOYER_TAG', '') == '')
-                options['DEPLOYER_TAG'] = 'Deploy'
-
-            if(options.get('TESTER_TAG', '') == '')
-                options['TESTER_TAG'] = 'Tester'
-
-            if(options.get('CLEAN_BUILD_DIR', '') == '')
-                options['CLEAN_BUILD_DIR'] = 'false'
-
-            if(options.get('CLEAN_TEST_DIR', '') == '')
-                options['CLEAN_TEST_DIR'] = 'false'
-            
-            if(options.get('CLEAN_DEPLOY_DIR', '') == '')
-                options['CLEAN_DEPLOY_DIR'] = 'true'
             
             def configMap = [:];
 
@@ -202,11 +134,10 @@ def call(String configString, Map options) {
                     tasks[it.key]=platformTask(it.key, it.value, options)
                 }
                 parallel tasks
-                
-                executeDeploy()
             }
             finally
             {
+                executeDeploy()
             }
         }
     }
