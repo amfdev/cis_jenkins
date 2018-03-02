@@ -120,8 +120,7 @@ def executeDeploy(Map configMap, Map options)
     String taskType = "deploy"
     String taskName = "deploy"
 
-    if(!executeFunction)
-        executeFunction = readOption(options, "${taskType}.function")
+    def executeFunction = readOption(options, "${taskType}.function")
     if(!executeFunction)
         return
 
