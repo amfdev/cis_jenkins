@@ -33,7 +33,17 @@ def call(String projectBranch = "",
         'deploy.function':this.&executeDeploy,
 
         'build.tag':'BuilderAMF',
+        'build.platform.tag.mingw_gcc_x64':'mingw',
+        'build.platform.tag.mingw_gcc_x86':'mingw',
+        'build.platform.tag.mingw_msvc_x64':'mingw',
+        'build.platform.tag.mingw_msvc_x86':'mingw',
+        
         'test.tag':'Tester',
+        'test.platform.tag.mingw_gcc_x64':'Windows',
+        'test.platform.tag.mingw_gcc_x86':'Windows',
+        'test.platform.tag.mingw_msvc_x64':'Windows',
+        'test.platform.tag.mingw_msvc_x86':'Windows',
+        
         'deploy.tag':'DeployerAMF'
     ]
     
