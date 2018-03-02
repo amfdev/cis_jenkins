@@ -1,31 +1,49 @@
 
-def executePlatform(String osName, String gpuNames, def executeBuild, def executeTests, def executeDeploy, Map options)
+def logEnvironmentInfo()
+{
+    if(isUnix())
+    {
+         sh "uname -a   >  ${CIS_LOG}.log"
+         sh "env        >> ${CIS_LOG}.log"
+    }
+    else
+    {
+         bat "HOSTNAME  >  ${CIS_LOG}.log"
+         bat "set       >> ${CIS_LOG}.log"
+    }
+}
+
+def executePlatform(String target, List testProfileList, Map options)
 {
     def retNode =  
     {
         try {
-            node("${osName} && ${options.BUILDER_TAG}")
-            {
-                stage("Build-${osName}")
-                {
-                    ws("WS/${options.PRJ_NAME}_Build")
-                    {
-                        try
-                        {
-                            if(options['cleanDirs'] == true)
-                            {
-                                echo 'cleaning directory'
-                                deleteDir()
-                            }
+            node("${target} && ${options.BUILDER_TAG}") {
+                
+                echo "Scheduling Build ${osName}"
 
-                            executeBuild(osName, options)
-                        }
-                        catch (e) {
-                            currentBuild.result = "BUILD FAILED"
-                            throw e
-                        }
-                        finally {
-                            //archiveArtifacts "${STAGE_NAME}.log"
+                stage("Build-${osName}") {
+                    ws("WS/${options.PRJ_NAME}_Build") {
+                        withEnv("CIS_LOG=${WORKSPACE}/${STAGE_NAME}.log") {
+                            try {
+                                if(options['BUILD_CLEAN'] == true) {
+                                    deleteDir()
+                                }
+                                
+                                logEnvironmentInfo()
+                                
+                                def executeBuild = options.get('${target}', null)
+                                if(!executeBuild)
+                                    throw new Exception("executeBuild is not defined for target ${target}")
+                                executeBuild(target, options)
+                            }
+                            catch (e) {
+                                currentBuild.result = "BUILD FAILED"
+                                throw e
+                            }
+                            finally {
+                                stash "${LOG_PATH}.log" "log-Build-${osName}"
+                            }
                         }
                     }
                 }
@@ -78,18 +96,44 @@ def executePlatform(String osName, String gpuNames, def executeBuild, def execut
             }
         }
         catch (e) {
-            println(e.toString());
             println(e.getMessage());
-            println(e.getStackTrace());        
-            currentBuild.result = "FAILED"
-            throw e
+            currentBuild.result = "TEST FAILED"
         }
     }
     return retNode
 }
 
-def call(String platforms, 
-         def executeBuild, def executeTests, def executeDeploy, Map options) {
+def executeDeploy(Map configMap, Map options)
+{
+    def deployFunction = options.get('${deployFunction}', null)
+    if(!deployFunction)
+        throw new Exception("deployFunction is not defined")
+
+    node("${options.DEPLOYER_TAG}")
+    {
+        stage("Deploy")
+        {
+            ws("WS/${options.PRJ_NAME}_Deploy")
+            {
+                try
+                {
+                    if(options['cleanDirs'] == true)
+                    {
+                        echo 'cleaning directory'
+                        deleteDir()
+                    }
+                    deployFunction(configMap, options)
+                }
+                catch (e) {
+                    println(e.getMessage());
+                    currentBuild.result = "DEPLOY FAILED"
+                }
+            }
+        }
+    }
+}
+
+def call(String configString, Map options) {
     
     try {
         
@@ -123,65 +167,33 @@ def call(String platforms,
             if(options.get('DEPLOY_CLEAN', '') == '')
                 options['DEPLOY_CLEAN'] = 'true'
             
-            def testResultList = [];
+            def configMap = [:];
 
+            configString.split(';').each()
+            {
+                List tokens = it.tokenize(':')
+                String target = tokens.get(0)
+                String profiles = tokens.get(1)
+                configMap[target] = []
+            
+                profiles.split(',').each()
+                {
+                    String profile = it
+                    configMap[target] << profile
+                }
+            }
+            
             try {
-                
                 def tasks = [:]
 
-                echo "${platforms}"
-                platforms.split(';').each()
+                configMap.each()
                 {
-                    echo "${it}"
-                    List tokens = it.tokenize(':')
-                    String osName = tokens.get(0)
-                    String gpuNames = tokens.get(1)
-                    echo "${osName}"
-                    echo "${gpuNames}"
-                    if(gpuNames)
-                    {
-                        gpuNames.split(',').each()
-                        {
-                            String asicName = it
-                            testResultList << "testResult-${asicName}-${osName}"
-                        }
-                    }
-                    tasks[osName]=executePlatform(osName, gpuNames, executeBuild, executeTests, executeDeploy, options)
+                    tasks[it.key]=executePlatform(it.key, it.value, options)
                 }
-                
                 parallel tasks
-                
             }
             finally
             {
-                if(executeDeploy)
-                {
-                    node("Windows && ${options.DEPLOYER_TAG}")
-                    {
-                        stage("Deploy")
-                        {
-                            ws("WS/${options.PRJ_NAME}_Deploy")
-                            {
-                                try
-                                {
-                                    if(options['cleanDirs'] == true)
-                                    {
-                                        echo 'cleaning directory'
-                                        deleteDir()
-                                    }
-                                    executeDeploy(options, testResultList)
-                                }
-                                catch (e) {
-                                    println(e.toString());
-                                    println(e.getMessage());
-                                    println(e.getStackTrace());
-                                    currentBuild.result = "DEPLOY FAILED"
-                                    throw e
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
     }
