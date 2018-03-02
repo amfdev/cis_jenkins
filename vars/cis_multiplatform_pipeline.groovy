@@ -49,8 +49,7 @@ def executeBuild(String target, Map options)
 {
     String taskType = "build"
     String taskName = "${taskType}-${target}"
-    String taskTag = options.get("${taskType}.tag", "${taskType}")
-    List nodeTags = [] << taskTag << target
+    List nodeTags = [] << readOption(options, "${taskType}.tag") << target
 
     def executeFunction = readOption(options, "${taskType}.function.${target}")
     if(!executeFunction)
