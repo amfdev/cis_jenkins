@@ -106,13 +106,13 @@ def call(String platforms,
             options['JOB_PATH']="${JOB_PATH}"
             
             if(options.get('BUILD_TAG', '') == '')
-                options['BUILD_TAG'] = 'Build'
+                options['BUILD_TAG'] = 'Builder'
 
             if(options.get('DEPLOY_TAG', '') == '')
                 options['DEPLOY_TAG'] = 'Deploy'
 
             if(options.get('TEST_TAG', '') == '')
-                options['TEST_TAG'] = 'Test'
+                options['TEST_TAG'] = 'Tester'
 
             if(options.get('BUILD_CLEAN', '') == '')
                 options['BUILD_CLEAN'] = 'false'
