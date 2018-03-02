@@ -135,6 +135,6 @@ def call(String projectBranch = "",
                             PRJ_ROOT:PRJ_ROOT,
                             projectRepo:projectRepo,
                             BUILDER_TAG:'BuilderAMF'
-                            DEPLOYER_TAG:'BuilderAMF'
+                            DEPLOYER_TAG:'DeployerAMF'
                            ])
 }
