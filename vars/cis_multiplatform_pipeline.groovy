@@ -55,6 +55,8 @@ def executeBuild(String target, Map options)
     List nodeTags = [] << readOption(options, "${taskType}.tag") 
     nodeTags << readOption(options, "test.platform.tag.${target}", target)
 
+    echo nodeTags.toString()
+    
     def executeFunction = readOption(options, "${taskType}.function.${target}")
     if(!executeFunction)
         executeFunction = readOption(options, "${taskType}.function")
