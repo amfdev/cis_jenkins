@@ -75,8 +75,8 @@ def platformTask(String target, List profileList, Map options)
             profileList.each()
             {
                 String profile = it
-                taksName, taskBody = testTask(target, it, options)
-                testTasks[taksName] = taskBody
+                def taskName, taskBody = testTask(target, it, options)
+                testTasks[taskName] = taskBody
             }
             parallel tasks
         }
