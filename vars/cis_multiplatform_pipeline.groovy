@@ -33,7 +33,7 @@ def executeBuild(String target, Map options)
                             executeFunction = options.get('build.function', null)
                         if(!executeFunction)
                             throw new Exception("build.function is not defined for target ${target}")
-                        executeBuild(target, options)
+                        executeFunction(target, options)
                     }
                     catch (e) {
                         currentBuild.result = "BUILD FAILED"
@@ -85,7 +85,7 @@ def testTask(String target, String profile, Map options)
     }
 }
 
-def executePlatform(String target, List profileList, Map options)
+def platformTask(String target, List profileList, Map options)
 {
     def retNode =  
     {
@@ -114,9 +114,9 @@ def executePlatform(String target, List profileList, Map options)
 
 def executeDeploy(Map configMap, Map options)
 {
-    def deployFunction = options.get('${deployFunction}', null)
+    def deployFunction = options.get('${deploy.function}', null)
     if(!deployFunction)
-        throw new Exception("deployFunction is not defined")
+        return
 
     node("${options.DEPLOYER_TAG}")
     {
@@ -196,9 +196,11 @@ def call(String configString, Map options) {
 
                 configMap.each()
                 {
-                    tasks[it.key]=executePlatform(it.key, it.value, options)
+                    tasks[it.key]=platformTask(it.key, it.value, options)
                 }
                 parallel tasks
+                
+                executeDeploy()
             }
             finally
             {
