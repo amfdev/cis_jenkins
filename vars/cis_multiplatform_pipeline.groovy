@@ -4,7 +4,7 @@ def executePlatform(String osName, String gpuNames, def executeBuild, def execut
     def retNode =  
     {
         try {
-            node("${osName} && ${options.BUILD_TAG}")
+            node("${osName} && ${options.BUILDER_TAG}")
             {
                 stage("Build-${osName}")
                 {
@@ -105,14 +105,14 @@ def call(String platforms,
             options['REF_PATH']="${REF_PATH}"
             options['JOB_PATH']="${JOB_PATH}"
             
-            if(options.get('BUILD_TAG', '') == '')
-                options['BUILD_TAG'] = 'Builder'
+            if(options.get('BUILDER_TAG', '') == '')
+                options['BUILDER_TAG'] = 'Builder'
 
-            if(options.get('DEPLOY_TAG', '') == '')
-                options['DEPLOY_TAG'] = 'Deploy'
+            if(options.get('DEPLOYER_TAG', '') == '')
+                options['DEPLOYER_TAG'] = 'Deploy'
 
-            if(options.get('TEST_TAG', '') == '')
-                options['TEST_TAG'] = 'Tester'
+            if(options.get('TESTER_TAG', '') == '')
+                options['TESTER_TAG'] = 'Tester'
 
             if(options.get('BUILD_CLEAN', '') == '')
                 options['BUILD_CLEAN'] = 'false'
@@ -156,7 +156,7 @@ def call(String platforms,
             {
                 if(executeDeploy)
                 {
-                    node("Windows && ${options.DEPLOY_TAG}")
+                    node("Windows && ${options.DEPLOYER_TAG}")
                     {
                         stage("Deploy")
                         {
