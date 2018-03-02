@@ -121,6 +121,7 @@ def call(String platforms,
             def testResultList = [];
 
             try {
+                /*
                 def tasks = [:]
 
                 platforms.split(';').each()
@@ -138,6 +139,7 @@ def call(String platforms,
                     tasks[osName]=executePlatform(osName, gpuNames, executeBuild, executeTests, executeDeploy, options)
                 }
                 parallel tasks
+                */
             }
             finally
             {
