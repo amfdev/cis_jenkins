@@ -53,10 +53,10 @@ def executeBuild(String target, Map options)
     echo "${taskType}.function"
 
     
-    def executeFunction = options.get("${taskType}.function.${target}", null)
+    def executeFunction = options.get("${taskType}.function.${target}")
     echo "1"
     if(!executeFunction)
-        executeFunction = options.get("${taskType}.function", null)
+        executeFunction = options.get("${taskType}.function")
     echo "2"
     echo "${taskType}.function"
     if(!executeFunction)
