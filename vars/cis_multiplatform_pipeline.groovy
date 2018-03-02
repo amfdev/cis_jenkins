@@ -106,7 +106,7 @@ def call(String platforms,
             options['JOB_PATH']="${JOB_PATH}"
             
             if(options.get('BUILD_TAG', '') == '')
-                options['BUILDER_TAG'] = 'Build'
+                options['BUILD_TAG'] = 'Build'
 
             if(options.get('DEPLOY_TAG', '') == '')
                 options['DEPLOY_TAG'] = 'Deploy'
