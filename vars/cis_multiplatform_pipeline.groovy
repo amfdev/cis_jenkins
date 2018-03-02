@@ -13,86 +13,95 @@ def logEnvironmentInfo()
     }
 }
 
-def executePlatform(String target, List testProfileList, Map options)
+def executeBuild(String target, Map options)
+{
+    String taskType = "build"
+    String taskName = "${taskType}-${target}"
+    node("${target} && ${options.BUILDER_TAG}") {
+        stage(taskName) {
+            ws("WS/${options.PRJ_NAME}_Build") {
+                withEnv("CIS_LOG=${WORKSPACE}/${taskName}.log") {
+                    try {
+                        if(options.get('build.cleandir', false) == true) {
+                            deleteDir()
+                        }
+
+                        logEnvironmentInfo()
+
+                        def executeFunction = options.get('build.function.${target}', null)
+                        if(!executeFunction)
+                            executeFunction = options.get('build.function', null)
+                        if(!executeFunction)
+                            throw new Exception("build.function is not defined for target ${target}")
+                        executeBuild(target, options)
+                    }
+                    catch (e) {
+                        currentBuild.result = "BUILD FAILED"
+                        throw e
+                    }
+                    finally {
+                        stash "${LOG_PATH}.log" "log-Build-${osName}"
+                    }
+                }
+            }
+        }
+    }
+}
+
+def testTask(String target, String profile, Map options)
+{
+    String taskType = "Test"
+    String taskName = "${taskType}-${target}-${profile}"
+    def ret = {
+        node("${target} && ${profile} && ${options.TESTER_TAG}") {
+            stage(taskName)
+            {
+                ws("WS/${options.PRJ_NAME}_Test")
+                {
+                    withEnv("CIS_LOG=${WORKSPACE}/${taskName}.log") {
+                        try
+                        {
+                            if(options['CLEAN_TEST_DIR'] == true)
+                                deleteDir()
+
+                            logEnvironmentInfo()
+
+                            def executeFunction = options.get('${target}', null)
+                            if(!executeBuild)
+                                throw new Exception("executeBuild is not defined for target ${target}")
+                            executeBuild(target, options)
+                        }
+                        catch (e) {
+                            currentBuild.result = "BUILD FAILED"
+                            throw e
+                        }
+                        finally {
+                            //archiveArtifacts "${STAGE_NAME}.log"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+def executePlatform(String target, List profileList, Map options)
 {
     def retNode =  
     {
         try {
-            node("${target} && ${options.BUILDER_TAG}") {
-                
-                echo "Scheduling Build ${osName}"
-
-                stage("Build-${osName}") {
-                    ws("WS/${options.PRJ_NAME}_Build") {
-                        withEnv("CIS_LOG=${WORKSPACE}/${STAGE_NAME}.log") {
-                            try {
-                                if(options['BUILD_CLEAN'] == true) {
-                                    deleteDir()
-                                }
-                                
-                                logEnvironmentInfo()
-                                
-                                def executeBuild = options.get('${target}', null)
-                                if(!executeBuild)
-                                    throw new Exception("executeBuild is not defined for target ${target}")
-                                executeBuild(target, options)
-                            }
-                            catch (e) {
-                                currentBuild.result = "BUILD FAILED"
-                                throw e
-                            }
-                            finally {
-                                stash "${LOG_PATH}.log" "log-Build-${osName}"
-                            }
-                        }
-                    }
-                }
-            }
-
-            if(gpuNames)
+            executeBuild(target, options)
+            
+            if(profileList.size())
             {
-                def testTasks = [:]
-                gpuNames.split(',').each()
+                def tasks = [:]
+                profileList.each()
                 {
-                    String asicName = it
-                    echo "Scheduling Test ${osName}:${asicName}"
-
-                    testTasks["Test-${it}-${osName}"] = {
-                        node("${osName} && ${options.TESTER_TAG} && gpu${asicName}")
-                        {
-                            stage("Test-${asicName}-${osName}")
-                            {
-                                ws("WS/${options.PRJ_NAME}_Test")
-                                {
-                                    try
-                                    {
-                                        if(options['cleanDirs'] == true)
-                                        {
-                                            echo 'cleaning directory'
-                                            deleteDir()
-                                        }
-
-                                        Map newOptions = options.clone()
-                                        newOptions['testResultsName'] = "testResult-${asicName}-${osName}"
-                                        executeTests(osName, asicName, newOptions)
-                                    }
-                                    catch (e) {
-                                        currentBuild.result = "BUILD FAILED"
-                                        throw e
-                                    }
-                                    finally {
-                                        //archiveArtifacts "${STAGE_NAME}.log"
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    String profile = it
+                    taksName, taskBody = testTask(target, it, options)
+                    testTasks[taksName] = taskBody
                 }
-                parallel testTasks
-            }
-            else
-            {
-                echo "No tests found for ${osName}"
+                parallel tasks
             }
         }
         catch (e) {
@@ -117,9 +126,8 @@ def executeDeploy(Map configMap, Map options)
             {
                 try
                 {
-                    if(options['cleanDirs'] == true)
+                    if(options['CLEAN_DEPLOY_DIR'] == true)
                     {
-                        echo 'cleaning directory'
                         deleteDir()
                     }
                     deployFunction(configMap, options)
@@ -158,14 +166,14 @@ def call(String configString, Map options) {
             if(options.get('TESTER_TAG', '') == '')
                 options['TESTER_TAG'] = 'Tester'
 
-            if(options.get('BUILD_CLEAN', '') == '')
-                options['BUILD_CLEAN'] = 'false'
+            if(options.get('CLEAN_BUILD_DIR', '') == '')
+                options['CLEAN_BUILD_DIR'] = 'false'
 
-            if(options.get('TEST_CLEAN', '') == '')
-                options['TEST_CLEAN'] = 'false'
+            if(options.get('CLEAN_TEST_DIR', '') == '')
+                options['CLEAN_TEST_DIR'] = 'false'
             
-            if(options.get('DEPLOY_CLEAN', '') == '')
-                options['DEPLOY_CLEAN'] = 'true'
+            if(options.get('CLEAN_DEPLOY_DIR', '') == '')
+                options['CLEAN_DEPLOY_DIR'] = 'true'
             
             def configMap = [:];
 
