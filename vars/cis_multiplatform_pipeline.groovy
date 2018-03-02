@@ -91,7 +91,6 @@ def executePlatform(String osName, String gpuNames, def executeBuild, def execut
 def call(String platforms, 
          def executeBuild, def executeTests, def executeDeploy, Map options) {
     
-    //currentBuild.result = "SUCCESSFUL"
     try {
         properties([[$class: 'BuildDiscarderProperty', strategy: 
                      [$class: 'LogRotator', artifactDaysToKeepStr: '', 
@@ -182,10 +181,12 @@ def call(String platforms,
         echo "enableNotifications = ${options.enableNotifications}"
         if("${options.enableNotifications}" == "true")
         {
+            /*
             sendBuildStatusNotification(currentBuild.result, 
                                         options.get('slackChannel', ''), 
                                         options.get('slackBaseUrl', ''),
                                         options.get('slackTocken', ''))
+                                        */
         }
     }
 }
