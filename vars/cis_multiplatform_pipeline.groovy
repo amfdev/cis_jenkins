@@ -40,9 +40,9 @@ def executeNode(String taskType, String taskName, String nodeTags, def executeFu
     }
 }
 
-def readOption(Map options, String key, def default = null)
+def readOption(Map options, String key, def defaultValue = null)
 {
-    return options.get(key, default)
+    return options.get(key, defaultValue)
 }
 
 def executeBuild(String target, Map options)
