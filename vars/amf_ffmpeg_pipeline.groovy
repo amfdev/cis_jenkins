@@ -3,7 +3,7 @@ def executeBuild(String target, Map options)
 {
     echo "executeBuild ${target}"
     
-    cis_checkout_scm(options['projectBranch'], 'https://github.com/amfdev/ffmpeg_ws.git')
+    cis_checkout_scm('master', 'https://github.com/amfdev/ffmpeg_ws.git')
     
     dir('FFmpeg')
     {
