@@ -39,7 +39,7 @@ def call(String projectBranch = "",
         projectName:projectName,
 
         'build.function':this.&executeBuild,
-        'test.function':this.&executeTest,
+        'test.function':this.&executeTests,
         'deploy.function':this.&executeDeploy,
 
         'build.tag':'BuilderAMF',
