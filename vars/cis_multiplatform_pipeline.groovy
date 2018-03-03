@@ -92,7 +92,7 @@ def testTask(String target, String profile, Map options)
     def ret = {
         executeNode(taskType, taskName, nodeTags.join(" && "), { executeFunction(target, profile, options) }, options)
     }
-    return taskName, ret
+    return Tuple2(taskName, ret)
 }
 
 def platformTask(String target, List profileList, Map options)
@@ -102,17 +102,16 @@ def platformTask(String target, List profileList, Map options)
        try {
             executeBuild(target, options)
 
-            echo "parsing tests"
             if(profileList && profileList.size())
             {
                 def tasks = [:]
                 profileList.each()
                 {
                     String profile = it
-                    echo "${profile}"
-                    def taskName, taskBody = testTask(target, profile, options)
-                    echo "${taskName}"
-                    tasks[taskName] = taskBody
+
+                    def taskDef = testTask(target, profile, options)
+
+                    tasks[taskDef.first] = taskDef.second
                 }
                 parallel tasks
             }
