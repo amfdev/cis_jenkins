@@ -91,7 +91,8 @@ def testTask(String target, String profile, Map options)
         error "${taskType}.function is not defined for target ${target}"
     }
     echo "2"
-    echo "${executeFunction}"
+    executeFunction(target, profile, options)
+    echo "3"
 
     def ret = {
         executeNode(taskType, taskName, nodeTags.join(" && "), { executeFunction(target, profile, options) }, options)
