@@ -81,7 +81,7 @@ def testTask(String target, String profile, Map options)
     List nodeTags = [] << options.get(str("${taskType}.tag")) 
     nodeTags << options.get(str("test.platform.tag.${target}"), target)
     nodeTags << profile
-    echo "1"
+    echo "1 ${taskName}"
 
     def executeFunction = options.get(str("${taskType}.function.${target}"))
     if(!executeFunction)
@@ -91,6 +91,7 @@ def testTask(String target, String profile, Map options)
         error "${taskType}.function is not defined for target ${target}"
     }
     echo "2"
+    echo "${executeFunction}"
 
     def ret = {
         executeNode(taskType, taskName, nodeTags.join(" && "), { executeFunction(target, profile, options) }, options)
