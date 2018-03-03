@@ -75,13 +75,11 @@ def executeBuild(String target, Map options)
 
 def testTask(String target, String profile, Map options)
 {
-    echo "0"
     String taskType = "test"
     String taskName = "${taskType}-${target}-${profile}"
     List nodeTags = [] << options.get(str("${taskType}.tag")) 
     nodeTags << options.get(str("test.platform.tag.${target}"), target)
     nodeTags << profile
-    echo "1 ${taskName}"
 
     def executeFunction = options.get(str("${taskType}.function.${target}"))
     if(!executeFunction)
@@ -90,14 +88,11 @@ def testTask(String target, String profile, Map options)
     {
         error "${taskType}.function is not defined for target ${target}"
     }
-    echo "2"
-    executeFunction(target, profile, options)
-    echo "3"
 
     def ret = {
         executeNode(taskType, taskName, nodeTags.join(" && "), { executeFunction(target, profile, options) }, options)
     }
-    return ret
+    return taskName, ret
 }
 
 def platformTask(String target, List profileList, Map options)
