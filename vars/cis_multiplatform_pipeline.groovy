@@ -23,21 +23,31 @@ def executeNode(String taskType, String taskName, String nodeTags, def executeFu
     node(nodeTags) {
         stage(taskName) {
             ws("WS/${options.projectName}_${taskType}") {
-                withEnv(["CIS_LOG=${WORKSPACE}/${taskName}.log"]) {
+                withEnv(["CIS_LOG=${WORKSPACE}/_sys/${taskName}.log"]) {
                     try {
-                        if(options.get(str("${taskType}.cleandir"), false) == true) {
+                        dir('_sys')
+                        {
                             deleteDir()
+                            logEnvironmentInfo()
                         }
-
-                        logEnvironmentInfo()
-                        executeFunction()
+                        
+                        dir('ws')
+                        {
+                            if(options.get(str("${taskType}.cleandir"), false) == true) {
+                                deleteDir()
+                            }
+                            executeFunction()
+                        }
                     }
                     catch (e) {
                         currentBuild.result = "${taskType} failed"
                         throw e
                     }
                     finally {
-                        stash includes: "${taskName}.log", name: "log${taskName}"
+                        dir('_sys')
+                        {
+                            stash includes: "${taskName}.log", name: "log${taskName}"
+                        }
                     }
                 }
             }
