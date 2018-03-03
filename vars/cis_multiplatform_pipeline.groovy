@@ -126,12 +126,13 @@ def executeDeploy(Map configMap, Map options)
 {
     String taskType = "deploy"
     String taskName = "deploy"
-
+    String nodeName = options.get(str("${taskType}.tag"))
+    
     def executeFunction = options.get(str("${taskType}.function"))
     if(!executeFunction)
         return
 
-    executeNode(taskType, taskName, "Deploy", { executeFunction(configMap, options) }, options)
+    executeNode(taskType, taskName, nodeName, { executeFunction(configMap, options) }, options)
 }
 
 def call(String configString, Map options) {
