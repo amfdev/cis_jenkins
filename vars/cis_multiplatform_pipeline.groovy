@@ -13,6 +13,11 @@ def logEnvironmentInfo()
     }
 }
 
+def str(String str)
+{
+    return str
+}
+
 def executeNode(String taskType, String taskName, String nodeTags, def executeFunction, Map options)
 {
     node(nodeTags) {
@@ -20,7 +25,7 @@ def executeNode(String taskType, String taskName, String nodeTags, def executeFu
             ws("WS/${options.projectName}_${taskType}") {
                 withEnv(["CIS_LOG=${WORKSPACE}/${taskName}.log"]) {
                     try {
-                        if(options.get("${taskType}.cleandir", false) == true) {
+                        if(options.get(str("${taskType}.cleandir"), false) == true) {
                             deleteDir()
                         }
 
@@ -40,24 +45,16 @@ def executeNode(String taskType, String taskName, String nodeTags, def executeFu
     }
 }
 
-def readOption(Map options, String key)
-{
-    return options.get(key)
-}
-def readOption(Map options, String key, def defaultValue)
-{
-    return options.get(key, defaultValue)
-}
 def executeBuild(String target, Map options)
 {
     String taskType = "build"
     String taskName = "${taskType}-${target}"
-    List nodeTags = [] << readOption(options, "${taskType}.tag") 
-    nodeTags << readOption(options, "build.platform.tag.${target}", target)
+    List nodeTags = [] << options.get(str("${taskType}.tag")) 
+    nodeTags << options.get(str("build.platform.tag.${target}"), target)
     
-    def executeFunction = readOption(options, "${taskType}.function.${target}")
+    def executeFunction = options.get(str("${taskType}.function.${target}"))
     if(!executeFunction)
-        executeFunction = readOption(options, "${taskType}.function")
+        executeFunction = options.get(str("${taskType}.function"))
     if(!executeFunction)
     {
         error "${taskType}.function is not defined for target ${target}"
@@ -69,13 +66,13 @@ def testTask(String target, String profile, Map options)
 {
     String taskType = "test"
     String taskName = "${taskType}-${target}-${profile}"
-    List nodeTags = [] << readOption(options, "${taskType}.tag") 
-    nodeTags << readOption(options, "test.platform.tag.${target}", target)
+    List nodeTags = [] << options.get(str("${taskType}.tag")) 
+    nodeTags << options.get(str("test.platform.tag.${target}"), target)
     nodeTags << profile
     
-    def executeFunction = readOption(options, "${taskType}.function.${target}")
+    def executeFunction = options.get(str("${taskType}.function.${target}"))
     if(!executeFunction)
-        executeFunction = readOption(options, "${taskType}.function")
+        executeFunction = options.get(str("${taskType}.function"))
     if(!executeFunction)
     {
         error "${taskType}.function is not defined for target ${target}"
@@ -120,7 +117,7 @@ def executeDeploy(Map configMap, Map options)
     String taskType = "deploy"
     String taskName = "deploy"
 
-    def executeFunction = readOption(options, "${taskType}.function")
+    def executeFunction = options.get(str("${taskType}.function"))
     if(!executeFunction)
         return
 
