@@ -100,7 +100,7 @@ def platformTask(String target, List profileList, Map options)
     def retNode =  
     {
        try {
-           executeBuild(target, options)
+            executeBuild(target, options)
 
             if(profileList && profileList.size())
             {
@@ -193,15 +193,5 @@ def call(String configString, Map options) {
     }
     finally {
 
-        echo "enableNotifications = ${options.enableNotifications}"
-        if("${options.enableNotifications}" == "true")
-        {
-            /*
-            sendBuildStatusNotification(currentBuild.result, 
-                                        options.get('slackChannel', ''), 
-                                        options.get('slackBaseUrl', ''),
-                                        options.get('slackTocken', ''))
-                                        */
-        }
     }
 }
