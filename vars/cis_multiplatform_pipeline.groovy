@@ -92,6 +92,7 @@ def testTask(String target, String profile, Map options)
     def ret = {
         executeNode(taskType, taskName, nodeTags.join(" && "), { executeFunction(target, profile, options) }, options)
     }
+    echo "1"
     return Tuple2(taskName, ret)
 }
 
@@ -109,7 +110,10 @@ def platformTask(String target, List profileList, Map options)
                 {
                     String profile = it
 
+                    echo "0"
                     def taskDef = testTask(target, profile, options)
+                    echo "2"
+                    echo "${taskDef}"
 
                     tasks[taskDef.first] = taskDef.second
                 }
