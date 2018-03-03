@@ -4,7 +4,7 @@ def executeBuild(String target, Map options)
     echo "executeBuild ${target}"
     dir('FFmpeg')
     {
-        //cis_checkout_scm(options['projectBranch'], options['projectRepo'])
+        cis_checkout_scm(options['projectBranch'], options['projectRepo'])
     }
 }
 
