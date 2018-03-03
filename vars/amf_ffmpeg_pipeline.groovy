@@ -25,7 +25,7 @@ def executeDeploy(Map configMap, Map options)
 }
 
 def call(String projectBranch = "", 
-         String config = 'mingw_gcc_x64,mingw_gcc_x86,mingw_msvc_x64,mingw_msvc_x86', 
+         String config = 'mingw_gcc_x64,mingw_gcc_x86,mingw_msvc_x64,mingw_msvc_x86:gpuAMD_RXVEGA', 
          String projectGroup='AMF',
          String projectName='AMF-FFmpeg',
          String projectRepo='https://github.com/amfdev/FFmpeg.git',
