@@ -102,13 +102,16 @@ def platformTask(String target, List profileList, Map options)
        try {
             executeBuild(target, options)
 
+            echo "parsing tests"
             if(profileList && profileList.size())
             {
                 def tasks = [:]
                 profileList.each()
                 {
+                    echo "${profile}"
                     String profile = it
-                    def taskName, taskBody = testTask(target, it, options)
+                    def taskName, taskBody = testTask(target, profile, options)
+                    echo "${taskName}"
                     tasks[taskName] = taskBody
                 }
                 parallel tasks
