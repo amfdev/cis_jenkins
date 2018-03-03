@@ -109,7 +109,7 @@ def platformTask(String target, List profileList, Map options)
                 {
                     String profile = it
                     def taskName, taskBody = testTask(target, it, options)
-                    testTasks[taskName] = taskBody
+                    tasks[taskName] = taskBody
                 }
                 parallel tasks
             }
