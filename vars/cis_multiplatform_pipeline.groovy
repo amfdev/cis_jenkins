@@ -48,6 +48,7 @@ def executeNode(String taskType, String taskName, String nodeTags, def executeFu
                         {
                             stash includes: "${taskName}.log", name: "log${taskName}"
                         }
+                        archiveArtifacts "_sys/${taskName}.log"
                     }
                 }
             }
