@@ -2,6 +2,10 @@
 def executeBuild(String target, Map options)
 {
     echo "executeBuild ${target}"
+    dir('FFmpeg')
+    {
+        //cis_checkout_scm(options['projectBranch'], options['projectRepo'])
+    }
 }
 
 def executeTests(String target, String profile, Map options)
