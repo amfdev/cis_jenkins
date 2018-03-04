@@ -4,12 +4,12 @@ def executeBuild(String target, Map options)
 {
     echo "executeBuild ${target}"
     
-    dir('x264_scripts')
+    dir('${options.projectName}_scripts')
     {
-        cis_checkout_scm('master', 'https://github.com/amfdev/x264_scripts.git')
+        cis_checkout_scm('master', 'https://github.com/amfdev/${options.projectName}_scripts.git')
     }
     
-    dir(options['x264'])
+    dir(options['projectName'])
     {
         cis_checkout_scm(options['projectBranch'], options['projectRepo'])
     }
