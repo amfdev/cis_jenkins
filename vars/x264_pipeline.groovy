@@ -30,7 +30,7 @@ def call(
             String config = 'mingw_gcc_x64,mingw_gcc_x86,mingw_msvc_x64,mingw_msvc_x86', 
             String projectGroup='AMF',
             String projectName='x264',
-            String projectRepo='http://git.videolan.org/git/x264.git'
+            String projectRepo='https://github.com/amfdev/x264.git'
         ) {
 
     Map options = [
