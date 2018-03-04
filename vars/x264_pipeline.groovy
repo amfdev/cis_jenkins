@@ -9,14 +9,20 @@ def executeBuild(String target, Map options)
         cis_checkout_scm('master', "https://github.com/amfdev/common_scripts.git")
     }
     
-    dir("${options.projectName}_scripts")
-    {
-        cis_checkout_scm('master', "https://github.com/amfdev/${options.projectName}_scripts.git")
-    }
-    
     dir(options['projectName'])
     {
         cis_checkout_scm(options['projectBranch'], options['projectRepo'])
+    }
+
+    dir("${options.projectName}_scripts")
+    {
+        cis_checkout_scm('master', "https://github.com/amfdev/${options.projectName}_scripts.git")
+        dir('build')
+        {
+            bat"""
+                ubuntu run sh -c './build.sh ${target}'
+            """
+        }
     }
 }
 
