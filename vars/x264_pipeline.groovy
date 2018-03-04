@@ -4,9 +4,9 @@ def executeBuild(String target, Map options)
 {
     echo "executeBuild ${target}"
     
-    dir('${options.projectName}_scripts')
+    dir("${options.projectName}_scripts")
     {
-        cis_checkout_scm('master', 'https://github.com/amfdev/${options.projectName}_scripts.git')
+        cis_checkout_scm('master', "https://github.com/amfdev/${options.projectName}_scripts.git")
     }
     
     dir(options['projectName'])
