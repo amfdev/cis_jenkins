@@ -136,6 +136,10 @@ def call(
         projectBranch_x264:projectBranch_x264,
         projectRepo_x264:projectRepo_x264,
 
+        projectName_AMF:projectName_AMF,
+        projectBranch_AMF:projectBranch_AMF,
+        projectRepo_AMF:projectRepo_AMF,
+        
         'build.function':this.&executeBuild,
         'deploy.function':this.&executeDeploy,
 
