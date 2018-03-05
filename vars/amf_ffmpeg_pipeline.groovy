@@ -10,6 +10,23 @@ def executeBuild(String target, Map options)
     }
 
     // build x264 (move to prebuild block)
+    dir(options['projectName_AMF'])
+    {
+        cis_checkout_scm(options['projectBranch_AMF'], options['projectRepo_AMF'])
+    }
+
+    dir("${options.projectName_AMF}_scripts")
+    {
+        cis_checkout_scm('master', "https://github.com/amfdev/${options.projectName_AMF}_scripts.git")
+        dir('build')
+        {
+            bat """
+                ubuntu run sh -c './publish_headers.sh'
+            """
+        }
+    }
+    
+    // build x264 (move to prebuild block)
     dir(options['projectName_x264'])
     {
         cis_checkout_scm(options['projectBranch_x264'], options['projectRepo_x264'])
@@ -99,9 +116,14 @@ def call(
             String projectGroup='AMF',
             String projectName='FFmpeg',
             String projectRepo='https://github.com/amfdev/FFmpeg.git',
+
             String projectName_x264='x264',
             String projectBranch_x264='master',
-            String projectRepo_x264='https://github.com/amfdev/x264.git'
+            String projectRepo_x264='https://github.com/amfdev/x264.git',
+            
+            String projectName_AMF='AMF',
+            String projectBranch_AMF='master',
+            String projectRepo_AMF='https://github.com/GPUOpen-LibrariesAndSDKs/AMF.git'
         ) {
 
     Map options = [
