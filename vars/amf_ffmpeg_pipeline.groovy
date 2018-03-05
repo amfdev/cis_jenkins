@@ -108,7 +108,15 @@ def executeBuild(String target, Map options)
 
 def executeTests(String target, String profile, Map options)
 {
-    echo "executeTests ${target} ${profile}"
+    dir(target)
+    {
+        unstash "app-${target}"
+        dir('bin')
+        {
+            bat "echo executeTests ${target}-${profile} >> ${CIS_LOG} 2>&1"
+            bat "ffmpeg.exe -version >> ${CIS_LOG} 2>&1"
+        }
+    }
 }
 
 def executeDeploy(Map configMap, Map options)
@@ -118,6 +126,11 @@ def executeDeploy(Map configMap, Map options)
         dir(it.key)
         {
             unstash "app-${it.key}"
+            dir('bin')
+            {
+                bat "echo deploy ${it.key} >> ${CIS_LOG} 2>&1"
+                bat "ffmpeg.exe -version >> ${CIS_LOG} 2>&1"
+            }
         }
     }
 }
