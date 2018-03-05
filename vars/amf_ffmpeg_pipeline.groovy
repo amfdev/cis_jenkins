@@ -90,6 +90,10 @@ def call(
         projectGroup:projectGroup,
         projectName:projectName,
 
+        projectName_x264:projectName_x264,
+        projectBranch_x264:projectBranch_x264,
+        projectRepo_x264:projectRepo_x264,
+
         'build.function':this.&executeBuild,
         'deploy.function':this.&executeDeploy,
 
