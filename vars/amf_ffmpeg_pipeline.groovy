@@ -137,7 +137,8 @@ def executeDeploy(Map configMap, Map options)
 
 def call(
             String projectBranch = "", 
-            String config = 'mingw_gcc_x64,mingw_gcc_x86,mingw_msvc_x64,mingw_msvc_x86:gpuAMD_RXVEGA', 
+            String config = 'mingw_gcc_x64,mingw_gcc_x86:gpuAMD_RXVEGA', 
+            //String config = 'mingw_gcc_x64,mingw_gcc_x86,mingw_msvc_x64,mingw_msvc_x86:gpuAMD_RXVEGA', 
             //String config = 'mingw_gcc_x64', 
             String projectGroup='AMF',
             String projectName='FFmpeg',
@@ -167,6 +168,7 @@ def call(
         projectRepo_AMF:projectRepo_AMF,
         
         'build.function':this.&executeBuild,
+        'test.function':this.&executeTests,
         'deploy.function':this.&executeDeploy,
 
         'build.tag':'BuilderAMF',
