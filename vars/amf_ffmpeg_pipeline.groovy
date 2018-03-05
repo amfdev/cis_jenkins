@@ -135,37 +135,25 @@ def executeDeploy(Map configMap, Map options)
     }
 }
 
-def call(
-            String projectBranch = "", 
-            String config = 'mingw_gcc_x64,mingw_gcc_x86:gpuAMD_RXVEGA', 
-            //String config = 'mingw_gcc_x64,mingw_gcc_x86,mingw_msvc_x64,mingw_msvc_x86:gpuAMD_RXVEGA', 
-            //String config = 'mingw_gcc_x64', 
-            String projectGroup='AMF',
-            String projectName='FFmpeg',
-            String projectRepo='https://github.com/amfdev/FFmpeg.git',
-
-            String projectName_x264='x264',
-            String projectBranch_x264='master',
-            String projectRepo_x264='https://github.com/amfdev/x264.git',
-            
-            String projectName_AMF='AMF',
-            String projectBranch_AMF='master',
-            String projectRepo_AMF='https://github.com/GPUOpen-LibrariesAndSDKs/AMF.git'
+def call(Map userOptions = [:]
         ) {
 
     Map options = [
-        projectBranch:projectBranch,
-        projectRepo:projectRepo,
-        projectGroup:projectGroup,
-        projectName:projectName,
+        config:'mingw_gcc_x64,mingw_gcc_x86:gpuAMD_RXVEGA'
+        
+        projectGroup:'AMF',
 
-        projectName_x264:projectName_x264,
-        projectBranch_x264:projectBranch_x264,
-        projectRepo_x264:projectRepo_x264,
+        projectName:'FFmpeg',
+        projectBranch:'master',
+        projectRepo:'https://github.com/amfdev/FFmpeg.git',
 
-        projectName_AMF:projectName_AMF,
-        projectBranch_AMF:projectBranch_AMF,
-        projectRepo_AMF:projectRepo_AMF,
+        projectName_x264:'x264',
+        projectBranch_x264:'master',
+        projectRepo_x264:'https://github.com/amfdev/x264.git',
+
+        projectName_AMF:'AMF',
+        projectBranch_AMF:'master',
+        projectRepo_AMF:'https://github.com/GPUOpen-LibrariesAndSDKs/AMF.git',
         
         'build.function':this.&executeBuild,
         'test.function':this.&executeTests,
@@ -186,5 +174,10 @@ def call(
         'deploy.tag':'DeployerAMF'
     ]
     
-    cis_multiplatform_pipeline(config, options)
+    userOptions.each()
+    {
+        options[it.key]=it.value
+    }
+    
+    cis_multiplatform_pipeline(options)
 }
