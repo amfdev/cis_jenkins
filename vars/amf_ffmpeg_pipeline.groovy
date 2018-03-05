@@ -8,7 +8,7 @@ def executeBuild(String target, Map options)
     {
         cis_checkout_scm('master', "https://github.com/amfdev/common_scripts.git")
     }
-/*
+
     // build x264 (move to prebuild block)
     dir(options['projectName_AMF'])
     {
@@ -98,7 +98,7 @@ def executeBuild(String target, Map options)
             }
         }
     }
-    */
+
     dir("${options.projectName}/redist/${target}")
     {
         bat "echo ${target} > testout.txt"
@@ -124,7 +124,7 @@ def executeDeploy(Map configMap, Map options)
 
 def call(
             String projectBranch = "", 
-            String config = 'mingw_gcc_x64,mingw_gcc_x86,mingw_msvc_x64,mingw_msvc_x86', 
+            String config = 'mingw_gcc_x64,mingw_gcc_x86,mingw_msvc_x64,mingw_msvc_x86:gpuAMD_RXVEGA', 
             //String config = 'mingw_gcc_x64', 
             String projectGroup='AMF',
             String projectName='FFmpeg',
@@ -161,7 +161,13 @@ def call(
         'build.platform.tag.mingw_gcc_x86':'mingw',
         'build.platform.tag.mingw_msvc_x64':'mingw',
         'build.platform.tag.mingw_msvc_x86':'mingw',
-       
+
+        'test.tag':'TesterAMF',
+        'test.platform.tag.mingw_gcc_x64':'Windows',
+        'test.platform.tag.mingw_gcc_x86':'Windows',
+        'test.platform.tag.mingw_msvc_x64':'Windows',
+        'test.platform.tag.mingw_msvc_x86':'Windows',
+        
         'deploy.tag':'DeployerAMF'
     ]
     
