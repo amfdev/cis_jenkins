@@ -21,7 +21,7 @@ def executeBuild(String target, Map options)
         dir('build')
         {
             bat"""
-                ubuntu run sh -c './build.sh ${target}'
+                ubuntu run sh -c './build.sh ${target}' >> ${CIS_LOG} 2>&1
             """
         }
     }
@@ -38,7 +38,7 @@ def executeBuild(String target, Map options)
         dir('build')
         {
             bat"""
-                ubuntu run sh -c './build.sh ${target}'
+                ubuntu run sh -c './build.sh ${target}' >> ${CIS_LOG} 2>&1
             """
         }
     }
