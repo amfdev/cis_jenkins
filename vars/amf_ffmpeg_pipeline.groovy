@@ -37,6 +37,7 @@ def executeBuild(String target, Map options)
         cis_checkout_scm('master', "https://github.com/amfdev/${options.projectName}_scripts.git")
         dir('build')
         {
+            echo "${target} == mingw_msvc_x64"
             if("${target}" == "mingw_msvc_x64")
             {
                 bat"""
