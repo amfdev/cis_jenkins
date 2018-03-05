@@ -139,7 +139,9 @@ def executeDeploy(Map configMap, Map options)
     executeNode(taskType, taskName, nodeName, { executeFunction(configMap, options) }, options)
 }
 
-def call(String configString, Map options) {
+def call(Map options) {
+    
+    String configString = options.get('config')
     
     try {
         
