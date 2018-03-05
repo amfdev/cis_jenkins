@@ -139,7 +139,7 @@ def call(Map userOptions = [:]
         ) {
 
     Map options = [
-        config:'mingw_gcc_x64,mingw_gcc_x86:gpuAMD_RXVEGA'
+        config:'mingw_gcc_x64,mingw_gcc_x86:gpuAMD_RXVEGA',
         
         projectGroup:'AMF',
 
