@@ -8,7 +8,7 @@ def executeBuild(String target, Map options)
     {
         cis_checkout_scm('master', "https://github.com/amfdev/common_scripts.git")
     }
-
+/*
     // build x264 (move to prebuild block)
     dir(options['projectName_AMF'])
     {
@@ -98,6 +98,12 @@ def executeBuild(String target, Map options)
             }
         }
     }
+    */
+    dir("${options.projectName}/redist/${target}")
+    {
+        bat "echo ${target} > testout.txt"
+        stash includes: '**/*', name: "app-${target}"
+    }
 }
 
 def executeTests(String target, String profile, Map options)
@@ -107,7 +113,13 @@ def executeTests(String target, String profile, Map options)
 
 def executeDeploy(Map configMap, Map options)
 {
-    echo "executeDeploy"
+    configMap.each()
+    {
+        dir(it.key)
+        {
+            unstash "app-${it.key}"
+        }
+    }
 }
 
 def call(
