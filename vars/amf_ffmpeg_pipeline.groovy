@@ -59,7 +59,10 @@ def executeBuild(String target, Map options)
     {
         cis_checkout_scm(options['projectBranch_x264'], options['projectRepo_x264'])
     }
-
+    dir("${options.projectName_x264}_redist")
+    {
+        deleteDir()
+    }
     dir("${options.projectName_x264}_scripts")
     {
         cis_checkout_scm('master', "https://github.com/amfdev/${options.projectName_x264}_scripts.git")
@@ -74,7 +77,10 @@ def executeBuild(String target, Map options)
     {
         cis_checkout_scm(options['projectBranch_x265'], options['projectRepo_x265'])
     }
-
+    dir("${options.projectName_x265}_redist")
+    {
+        deleteDir()
+    }
     dir("${options.projectName_x265}_scripts")
     {
         cis_checkout_scm('master', "https://github.com/amfdev/${options.projectName_x265}_scripts.git")
@@ -89,7 +95,10 @@ def executeBuild(String target, Map options)
     {
         cis_checkout_scm(options['projectBranch'], options['projectRepo'])
     }
-
+    dir("${options.projectName}_redist")
+    {
+        deleteDir()
+    }
     dir("${options.projectName}_scripts")
     {
         cis_checkout_scm('master', "https://github.com/amfdev/${options.projectName}_scripts.git")
@@ -99,7 +108,7 @@ def executeBuild(String target, Map options)
         }
     }
 
-    dir("${options.projectName}/redist/${target}")
+    dir("${options.projectName}_redist/${target}")
     {
         bat "echo ${target} > testout.txt"
         stash includes: '**/*', name: "app-${target}"
@@ -170,12 +179,14 @@ def call(Map userOptions = [:]
         'build.platform.tag.mingw_msvc_x86':'mingw',
 
         'test.tag':'TesterAMF',
+        'test.cleandir':true,
         'test.platform.tag.mingw_gcc_x64':'Windows',
         'test.platform.tag.mingw_gcc_x86':'Windows',
         'test.platform.tag.mingw_msvc_x64':'Windows',
         'test.platform.tag.mingw_msvc_x86':'Windows',
         
-        'deploy.tag':'DeployerAMF'
+        'deploy.tag':'DeployerAMF',
+        'deploy.cleandir':true
     ]
     
     userOptions.each()
