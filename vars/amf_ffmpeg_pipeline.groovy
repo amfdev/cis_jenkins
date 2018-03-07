@@ -1,4 +1,32 @@
 
+def buildHelper(String target)
+{
+    if("${target}" == "mingw_msvc_x64")
+    {
+        bat"""
+            set PATH=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin\\amd64;C:\\Program Files (x86)\\Windows Kits\\8.1\\bin\\x64;%PATH%
+            set INCLUDE=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\INCLUDE;C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\um\\;C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\shared\\;C:\\Program Files (x86)\\Windows Kits\\10\\include\\10.0.10240.0\\ucrt
+            set LIB=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\LIB\\amd64;C:\\Program Files (x86)\\Windows Kits\\8.1\\lib\\winv6.3\\um\\x64;C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.10150.0\\ucrt\\x64
+            ubuntu run sh -c './build.sh ${target}' >> ${CIS_LOG} 2>&1
+        """
+    }else
+    if("${target}" == "mingw_msvc_x86")
+    {
+        bat"""
+            set PATH=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin;C:\\Program Files (x86)\\Windows Kits\\8.1\\bin\\x86;%PATH%
+            set INCLUDE=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\INCLUDE;C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\um\\;C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\shared\\;C:\\Program Files (x86)\\Windows Kits\\10\\include\\10.0.10240.0\\ucrt
+            set LIB=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\LIB;C:\\Program Files (x86)\\Windows Kits\\8.1\\lib\\winv6.3\\um\\x86;C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.10150.0\\ucrt\\x86
+            ubuntu run sh -c './build.sh ${target}' >> ${CIS_LOG} 2>&1
+        """
+    }
+    else
+    {
+        bat"""
+            ubuntu run sh -c './build.sh ${target}' >> ${CIS_LOG} 2>&1
+        """
+    }
+}
+
 
 def executeBuild(String target, Map options)
 {
@@ -37,28 +65,22 @@ def executeBuild(String target, Map options)
         cis_checkout_scm('master', "https://github.com/amfdev/${options.projectName_x264}_scripts.git")
         dir('build')
         {
-            if("${target}" == "mingw_msvc_x64")
-            {
-                bat"""
-                    set INCLUDE=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\INCLUDE;C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\um\\;C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\shared\\;C:\\Program Files (x86)\\Windows Kits\\10\\include\\10.0.10240.0\\ucrt
-                    set LIB=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\LIB\\amd64;C:\\Program Files (x86)\\Windows Kits\\8.1\\lib\\winv6.3\\um\\x64;C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.10150.0\\ucrt\\x64
-                    ubuntu run sh -c './build.sh ${target}' >> ${CIS_LOG} 2>&1
-                """
-            }else
-            if("${target}" == "mingw_msvc_x86")
-            {
-                bat"""
-                    set INCLUDE=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\INCLUDE;C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\um\\;C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\shared\\;C:\\Program Files (x86)\\Windows Kits\\10\\include\\10.0.10240.0\\ucrt
-                    set LIB=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\LIB;C:\\Program Files (x86)\\Windows Kits\\8.1\\lib\\winv6.3\\um\\x86;C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.10150.0\\ucrt\\x86
-                    ubuntu run sh -c './build.sh ${target}' >> ${CIS_LOG} 2>&1
-                """
-            }
-            else
-            {
-                bat"""
-                    ubuntu run sh -c './build.sh ${target}' >> ${CIS_LOG} 2>&1
-                """
-            }
+            buildHelper(target)
+        }
+    }
+
+    // build x265 (move to prebuild block)
+    dir(options['projectName_x265'])
+    {
+        cis_checkout_scm(options['projectBranch_x265'], options['projectRepo_x265'])
+    }
+
+    dir("${options.projectName_x265}_scripts")
+    {
+        cis_checkout_scm('master', "https://github.com/amfdev/${options.projectName_x265}_scripts.git")
+        dir('build')
+        {
+            buildHelper(target)
         }
     }
     
@@ -73,29 +95,7 @@ def executeBuild(String target, Map options)
         cis_checkout_scm('master', "https://github.com/amfdev/${options.projectName}_scripts.git")
         dir('build')
         {
-            echo "${target} == mingw_msvc_x64"
-            if("${target}" == "mingw_msvc_x64")
-            {
-                bat"""
-                    set INCLUDE=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\INCLUDE;C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\um\\;C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\shared\\;C:\\Program Files (x86)\\Windows Kits\\10\\include\\10.0.10240.0\\ucrt
-                    set LIB=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\LIB\\amd64;C:\\Program Files (x86)\\Windows Kits\\8.1\\lib\\winv6.3\\um\\x64;C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.10150.0\\ucrt\\x64
-                    ubuntu run sh -c './build.sh ${target}' >> ${CIS_LOG} 2>&1
-                """
-            }else
-            if("${target}" == "mingw_msvc_x86")
-            {
-                bat"""
-                    set INCLUDE=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\INCLUDE;C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\um\\;C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\shared\\;C:\\Program Files (x86)\\Windows Kits\\10\\include\\10.0.10240.0\\ucrt
-                    set LIB=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\LIB;C:\\Program Files (x86)\\Windows Kits\\8.1\\lib\\winv6.3\\um\\x86;C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.10150.0\\ucrt\\x86
-                    ubuntu run sh -c './build.sh ${target}' >> ${CIS_LOG} 2>&1
-                """
-            }
-            else
-            {
-                bat"""
-                    ubuntu run sh -c './build.sh ${target}' >> ${CIS_LOG} 2>&1
-                """
-            }
+            buildHelper(target)
         }
     }
 
@@ -150,6 +150,10 @@ def call(Map userOptions = [:]
         projectName_x264:'x264',
         projectBranch_x264:'master',
         projectRepo_x264:'https://github.com/amfdev/x264.git',
+
+        projectName_x265:'x265',
+        projectBranch_x265:'master',
+        projectRepo_x265:'https://github.com/amfdev/x265.git',
 
         projectName_AMF:'AMF',
         projectBranch_AMF:'master',
