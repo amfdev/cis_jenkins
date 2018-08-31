@@ -30,9 +30,10 @@ def buildHelper(String target)
 def executeBuild(String target, Map options)
 {
     echo "-------------------------------------executeBuild ${target}-------------------------------------"
-	dir("common_scripts")
+	cis_checkout_scm('master', "https://github.com/amfdev/HandBrake_dev")
+	dir("Sources")
     {
-        cis_checkout_scm('master', "https://github.com/amfdev/common_scripts.git")
+        cis_checkout_scm('master', "https://github.com/amfdev/HandBrake.git")
     }
     
     echo "-----------------------------------------end----------------------------------------------------"
