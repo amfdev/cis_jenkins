@@ -48,7 +48,7 @@ def call(Map userOptions = [:]
         ) {
 
     Map options = [
-        config:'test:test
+        config:'test:test',
         
         projectGroup:'AMF',
 
