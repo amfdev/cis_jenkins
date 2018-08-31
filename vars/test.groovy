@@ -20,7 +20,7 @@ def buildHelper(String target)
 def executeBuild(String target, Map options)
 {
     echo "-------------------------------------executeBuild ${target}-------------------------------------"
-	dir("thirdparty"
+	dir("thirdparty")
 	{
 		cis_checkout_scm('master', "https://github.com/amfdev/thirdparty.git")
 	}
