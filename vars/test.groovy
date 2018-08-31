@@ -4,12 +4,12 @@ def buildHelper(String target)
     {
         bat '''bash ./scripts/build.sh mingw_gcc_x64 rebuild debug'''
 		echo "mingw_gcc_x64 rem bash ./build.sh mingw_gcc_x86 rebuild debug"
-    }else
-	if("${target}" == "mingw")
+    }
+	else if("${target}" == "mingw")
     {
         bat '''bash ./scripts/build.sh mingw_gcc_x64 rebuild debug'''
 		echo "mingw rem bash ./build.sh mingw_gcc_x86 rebuild debug"
-    }else
+    }
     else
     {
         echo "???????????????????????????unknown target${target}??????????????????????????"
