@@ -20,13 +20,19 @@ def buildHelper(String target)
 def executeBuild(String target, Map options)
 {
     echo "-------------------------------------executeBuild ${target}-------------------------------------"
-	cis_checkout_scm('master', "https://github.com/amfdev/HandBrake_dev")
-	dir("Sources")
-    {
-        cis_checkout_scm('master', "https://github.com/amfdev/HandBrake.git")
+	dir("thirdparty"
+	{
+		cis_checkout_scm('master', "https://github.com/amfdev/thirdparty.git")
+	}
+	dir("HandBrake")
+	{
+		cis_checkout_scm('master', "https://github.com/amfdev/HandBrake_dev")
+		dir("Sources")
+		{
+			cis_checkout_scm('master', "https://github.com/amfdev/HandBrake.git")
+		}
+		buildHelper(target)
     }
-	buildHelper(target)
-    
     echo "-----------------------------------------end----------------------------------------------------"
 }
 
