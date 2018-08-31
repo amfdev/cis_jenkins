@@ -29,19 +29,27 @@ def buildHelper(String target)
 
 def executeBuild(String target, Map options)
 {
-    echo "executeBuild ${target}"
+    echo "-------------------------------------executeBuild ${target}-------------------------------------"
+	dir("common_scripts")
+    {
+        cis_checkout_scm('master', "https://github.com/amfdev/common_scripts.git")
+    }
     
-    
+    echo "-----------------------------------------end----------------------------------------------------"
 }
 
 def executeTests(String target, String profile, Map options)
 {
-	echo 'executeTests'
+	echo "-------------------------------------executeTests ${target}-------------------------------------"
+    
+    echo "-----------------------------------------end----------------------------------------------------"
 }
 
 def executeDeploy(Map configMap, Map options)
 {
-	echo 'executeDeploy'
+	echo "-------------------------------------executeDeploy ${target}-------------------------------------"
+    
+    echo "-----------------------------------------end----------------------------------------------------"
 }
 
 def call(Map userOptions = [:]
