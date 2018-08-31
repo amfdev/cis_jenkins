@@ -1,28 +1,18 @@
 def buildHelper(String target)
 {
-    if("${target}" == "mingw_msvc_x64")
+    if("${target}" == "mingw_gcc_x64")
     {
-        bat"""
-            set PATH=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin\\amd64;C:\\Program Files (x86)\\Windows Kits\\8.1\\bin\\x64;%PATH%
-            set INCLUDE=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\INCLUDE;C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\um\\;C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\shared\\;C:\\Program Files (x86)\\Windows Kits\\10\\include\\10.0.10240.0\\ucrt
-            set LIB=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\LIB\\amd64;C:\\Program Files (x86)\\Windows Kits\\8.1\\lib\\winv6.3\\um\\x64;C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.10150.0\\ucrt\\x64
-            ubuntu run sh -c './build.sh ${target}' >> ${CIS_LOG} 2>&1
-        """
+        bat '''bash ./scripts/build.sh mingw_gcc_x64 rebuild debug'''
+		echo "mingw_gcc_x64 rem bash ./build.sh mingw_gcc_x86 rebuild debug"
     }else
-    if("${target}" == "mingw_msvc_x86")
+	if("${target}" == "mingw")
     {
-        bat"""
-            set PATH=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin;C:\\Program Files (x86)\\Windows Kits\\8.1\\bin\\x86;%PATH%
-            set INCLUDE=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\INCLUDE;C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\um\\;C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\shared\\;C:\\Program Files (x86)\\Windows Kits\\10\\include\\10.0.10240.0\\ucrt
-            set LIB=C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\LIB;C:\\Program Files (x86)\\Windows Kits\\8.1\\lib\\winv6.3\\um\\x86;C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.10150.0\\ucrt\\x86
-            ubuntu run sh -c './build.sh ${target}' >> ${CIS_LOG} 2>&1
-        """
-    }
+        bat '''bash ./scripts/build.sh mingw_gcc_x64 rebuild debug'''
+		echo "mingw rem bash ./build.sh mingw_gcc_x86 rebuild debug"
+    }else
     else
     {
-        bat"""
-            ubuntu run sh -c './build.sh ${target}' >> ${CIS_LOG} 2>&1
-        """
+        echo "???????????????????????????unknown target${target}??????????????????????????"
     }
 }
 
@@ -35,6 +25,7 @@ def executeBuild(String target, Map options)
     {
         cis_checkout_scm('master', "https://github.com/amfdev/HandBrake.git")
     }
+	buildHelper(target)
     
     echo "-----------------------------------------end----------------------------------------------------"
 }
@@ -57,7 +48,7 @@ def call(Map userOptions = [:]
         ) {
 
     Map options = [
-        config:'test:test',
+        config:'mingw_gcc_x64, test:test',
         
         projectGroup:'AMF',
 
