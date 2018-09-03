@@ -33,6 +33,7 @@ def buildGuiHelper(String target)
 
 			copy %curDir%/_build-mingw_gcc_x64-debug/libhb/hb.dll %curDir%/Sources/win/CS/HandBrakeWPF/bin/x64/Release/hb.dll
 			cd %curDir%
+			echo %cd%
 		'''
     }
     else
@@ -57,10 +58,10 @@ def executeBuild(String target, Map options)
 		}
 		buildHelper(target)
 		buildGuiHelper(target)
-		stash includes: '/_build-mingw_gcc_x64-debug/libhb/hb.dll', name: 'buildLib'
-		stash includes: '/_build-mingw_gcc_x64-debug/HandBrakeCLI.exe', name: 'buildCLI'
-		stash includes: '/Sources/win/CS/HandBrakeWPF/bin/x64/Release/HandBrake.exe', name: 'buildGUI'
-		stash includes: '/Sources/win/CS/HandBrakeWPF/bin/x64/Release/HandBrake-*-Win_GUI.exe.exe', name: 'buildInstaller'
+		stash includes: '_build-mingw_gcc_x64-debug/libhb/hb.dll', name: 'buildLib'
+		stash includes: '_build-mingw_gcc_x64-debug/HandBrakeCLI.exe', name: 'buildCLI'
+		stash includes: 'Sources/win/CS/HandBrakeWPF/bin/x64/Release/HandBrake.exe', name: 'buildGUI'
+		stash includes: 'Sources/win/CS/HandBrakeWPF/bin/x64/Release/HandBrake-*-Win_GUI.exe.exe', name: 'buildInstaller'
     }
     echo "-----------------------------------------end----------------------------------------------------"
 }
