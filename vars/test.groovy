@@ -29,10 +29,7 @@ def buildGuiHelper(String target)
 			::%msbuild% /t:restore packages.config
 			%nuget% install packages.config
 			%nuget% restore
-			%msbuild% %project% /property:Configuration=Release /t:Release /property:Platform=x64 /p:PlatformToolset=%toolset% /m
-
-			copy %curDir%/_build-mingw_gcc_x64-debug/libhb/hb.dll %curDir%/Sources/win/CS/HandBrakeWPF/bin/x64/Release/hb.dll
-			cd %curDir%
+			%msbuild% %project% /property:Configuration=Release /t:Release /property:Platform=x64 /m
 			echo %cd%
 		'''
     }
