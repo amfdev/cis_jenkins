@@ -15,28 +15,25 @@ def buildGuiHelper(String target)
 {
 	if("${target}" == "mingw" || "${target}" == "mingw_gcc_x64")
     {
-		dir("HandBrake")
-		{
-			bat '''
-				set msbuild="C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/MSBuild/15.0/Bin/msbuild.exe"
-				set nuget="C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/MSBuild/15.0/Bin/nuget.exe"
-				set pathToNSIS=C:/Program Files (x86)/NSIS;
-				::set toolset=v140
-				set project=build.xml
-				::HandBrake.sln
-				set PATH=%PATH%;%pathToNSIS%
-				set curDir=%cd%
+		bat '''
+			set msbuild="C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/MSBuild/15.0/Bin/msbuild.exe"
+			set nuget="C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/MSBuild/15.0/Bin/nuget.exe"
+			set pathToNSIS=C:/Program Files (x86)/NSIS;
+			::set toolset=v140
+			set project=build.xml
+			::HandBrake.sln
+			set PATH=%PATH%;%pathToNSIS%
+			set curDir=%cd%
 
-				cd Sources/win/CS
-				::%msbuild% /t:restore packages.config
-				%nuget% install packages.config
-				%nuget% restore
-				%msbuild% %project% /property:Configuration=Release /t:Release /property:Platform=x64 /p:PlatformToolset=%toolset% /m
+			cd Sources/win/CS
+			::%msbuild% /t:restore packages.config
+			%nuget% install packages.config
+			%nuget% restore
+			%msbuild% %project% /property:Configuration=Release /t:Release /property:Platform=x64 /p:PlatformToolset=%toolset% /m
 
-				copy %curDir%/../_build-mingw_gcc_x64-debug/libhb/hb.dll %curDir%/../Sources/win/CS/HandBrakeWPF/bin/x64/Release/hb.dll
-				cd %curDir%
-			'''
-		}
+			copy %curDir%/_build-mingw_gcc_x64-debug/libhb/hb.dll %curDir%/Sources/win/CS/HandBrakeWPF/bin/x64/Release/hb.dll
+			cd %curDir%
+		'''
     }
     else
     {
@@ -60,6 +57,10 @@ def executeBuild(String target, Map options)
 		}
 		buildHelper(target)
 		buildGuiHelper(target)
+		stash includes: '/_build-mingw_gcc_x64-debug/libhb/hb.dll', name: 'buildLib'
+		stash includes: '/_build-mingw_gcc_x64-debug/HandBrakeCLI.exe', name: 'buildCLI'
+		stash includes: '/Sources/win/CS/HandBrakeWPF/bin/x64/Release/HandBrake.exe', name: 'buildGUI'
+		stash includes: '/Sources/win/CS/HandBrakeWPF/bin/x64/Release/HandBrake-*-Win_GUI.exe.exe', name: 'buildInstaller'
     }
     echo "-----------------------------------------end----------------------------------------------------"
 }
@@ -74,7 +75,23 @@ def executeTests(String target, String profile, Map options)
 def executeDeploy(Map configMap, Map options)
 {
 	echo "-------------------------------------executeDeploy ${target}-------------------------------------"
-    
+    dir("Lib")
+	{
+		unstash('buildLib')
+	}
+	dir("CLI")
+	{
+		unstash('buildCLI')
+	}
+	dir("GUI")
+	{
+		unstash('buildLib')
+		unstash('buildGUI')
+	}
+	dir("Installer")
+	{
+		unstash('buildInstaller')
+	}
     echo "-----------------------------------------end----------------------------------------------------"
 }
 
@@ -104,6 +121,8 @@ def call(Map userOptions = [:]
         'test.platform.tag.mingw_gcc_x86':'Windows',
         
         'deploy.tag':'test',
+		'deploy.platform.tag.mingw_gcc_x64':'Windows',
+		'deploy.platform.tag.mingw_gcc_x86':'Windows',
         'deploy.cleandir':true
     ]
     
