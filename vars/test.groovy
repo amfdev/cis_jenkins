@@ -2,7 +2,7 @@ def buildHelper(String target)
 {
     if("${target}" == "mingw" || "${target}" == "mingw_gcc_x64")
     {
-        bat '''bash ./scripts/build.sh mingw_gcc_x64 rebuild debug'''
+        bat '''bash ./scripts/build.sh mingw_gcc_x64 build debug'''
 		echo "mingw_gcc_x64 rem bash ./build.sh mingw_gcc_x86 rebuild debug"
     }
     else
@@ -55,9 +55,13 @@ def executeBuild(String target, Map options)
 		}
 		buildHelper(target)
 		buildGuiHelper(target)
+		echo "stash includes:  '_build-mingw_gcc_x64-debug/libhb/hb.dll', name: 'buildLib'"
 		stash includes: '_build-mingw_gcc_x64-debug/libhb/hb.dll', name: 'buildLib'
+		echo "stash includes: '_build-mingw_gcc_x64-debug/HandBrakeCLI.exe', name: 'buildCLI'"
 		stash includes: '_build-mingw_gcc_x64-debug/HandBrakeCLI.exe', name: 'buildCLI'
+		echo "stash includes: 'Sources/win/CS/HandBrakeWPF/bin/x64/Release/HandBrake.exe', name: 'buildGUI'"
 		stash includes: 'Sources/win/CS/HandBrakeWPF/bin/x64/Release/HandBrake.exe', name: 'buildGUI'
+		echo "stash includes: 'Sources/win/CS/HandBrakeWPF/bin/x64/Release/HandBrake-*-Win_GUI.exe.exe', name: 'buildInstaller'"
 		stash includes: 'Sources/win/CS/HandBrakeWPF/bin/x64/Release/HandBrake-*-Win_GUI.exe.exe', name: 'buildInstaller'
     }
     echo "-----------------------------------------end----------------------------------------------------"
