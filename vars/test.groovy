@@ -55,14 +55,26 @@ def executeBuild(String target, Map options)
 		}
 		buildHelper(target)
 		buildGuiHelper(target)
-		echo "stash includes:  '_build-mingw_gcc_x64-debug/libhb/hb.dll', name: 'buildLib'"
-		stash includes: '_build-mingw_gcc_x64-debug/libhb/hb.dll', name: 'buildLib'
-		echo "stash includes: '_build-mingw_gcc_x64-debug/HandBrakeCLI.exe', name: 'buildCLI'"
-		stash includes: '_build-mingw_gcc_x64-debug/HandBrakeCLI.exe', name: 'buildCLI'
-		echo "stash includes: 'Sources/win/CS/HandBrakeWPF/bin/x64/Release/HandBrake.exe', name: 'buildGUI'"
-		stash includes: 'Sources/win/CS/HandBrakeWPF/bin/x64/Release/HandBrake.exe', name: 'buildGUI'
-		echo "stash includes: 'Sources/win/CS/HandBrakeWPF/bin/x64/Release/HandBrake-*-Win_GUI.exe', name: 'buildInstaller'"
-		stash includes: 'Sources/win/CS/HandBrakeWPF/bin/x64/Release/HandBrake-*-Win_GUI.exe', name: 'buildInstaller'
+		dir("_build-mingw_gcc_x64-debug/libhb")
+		{
+			echo "stash includes:  'hb.dll', name: 'buildLib'"
+			stash includes: 'hb.dll', name: 'buildLib'
+		}
+		dir("_build-mingw_gcc_x64-debug")
+		{
+			echo "stash includes: 'HandBrakeCLI.exe', name: 'buildCLI'"
+			stash includes: 'HandBrakeCLI.exe', name: 'buildCLI'
+		}
+		dir("Sources/win/CS/HandBrakeWPF/bin/x64/Release")
+		{
+			echo "stash includes: 'HandBrake.exe', name: 'buildGUI'"
+			stash includes: 'HandBrake.exe', name: 'buildGUI'
+		}
+		dir("Sources/win/CS/HandBrakeWPF/bin/x64/Release/")
+		{
+			echo "stash includes: 'HandBrake-*-Win_GUI.exe', name: 'buildInstaller'"
+			stash includes: 'HandBrake-*-Win_GUI.exe', name: 'buildInstaller'
+		}
     }
     echo "-----------------------------------------end----------------------------------------------------"
 }
