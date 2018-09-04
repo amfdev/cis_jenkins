@@ -76,7 +76,7 @@ def executeTests(String target, String profile, Map options)
 
 def executeDeploy(Map configMap, Map options)
 {
-	echo "-------------------------------------executeDeploy ${target}-------------------------------------"
+	echo "-------------------------------------executeDeploy-------------------------------------"
     dir("Lib")
 	{
 		unstash('buildLib')
