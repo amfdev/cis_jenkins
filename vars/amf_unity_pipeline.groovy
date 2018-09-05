@@ -30,10 +30,13 @@ def buildPluginHelper(String target)
 
 def buildSamplesHelper(String target)
 {
-	dir("Scripts")
+	dir("Scripts/Samples")
 	{
 		bat '''
-			call build_samples.bat
+			call makeDist.cmd
+
+			call dist2Proj.cmd /../../Samples/VideoPlayBackSample
+			call build_unity_project.bat /../../Samples/VideoPlayBackSample
 		'''
 	}
 }
