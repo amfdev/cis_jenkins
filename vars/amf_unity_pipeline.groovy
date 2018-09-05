@@ -63,8 +63,6 @@ def executeBuild(String target, Map options)
 						popd
 						echo Copying
 						copy "%unitytemp%/graphicsdemos/NativeRenderingPlugin/PluginSource/source/Unity/*.h" source/Unity
-						echo Removing %unitytemp%
-						::rd /s /q "%unitytemp%"
 					)
 				) else (
 					echo Aborting, HG binary not found.
