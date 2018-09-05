@@ -33,7 +33,7 @@ def buildSamplesHelper(String target)
 	dir("Scripts")
 	{
 		bat '''
-			call build_samples.cmd
+			call build_samples.bat
 		'''
 	}
 }
