@@ -42,7 +42,9 @@ def executeBuild(String target, Map options)
 		cis_checkout_scm('master', "https://github.com/amfdev/Unity_dev.git")
 		dir("Scripts")
 		{
-			Runtime.runtime.exec("fetch_all.bat")
+		bat '''
+			call fetch_all.bat
+		'''
 		}
 		buildPluginHelper(target)
 		buildSamplesHelper(target)
