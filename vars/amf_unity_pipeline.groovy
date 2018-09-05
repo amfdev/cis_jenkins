@@ -44,7 +44,7 @@ def executeBuild(String target, Map options)
 	dir("Unity")
 	{
 		cis_checkout_scm('master', "https://github.com/amfdev/Unity_dev.git")
-		dir("UnityIntegrations")
+		dir("UnityIntegrations/AmfUnityPlugin")
 		{
 			cis_checkout_scm('master', "https://github.com/GPUOpen-LibrariesAndSDKs/UnityIntegrations.git")
 			bat '''
@@ -62,7 +62,7 @@ def executeBuild(String target, Map options)
 						hg clone https://bitbucket.org/Unity-Technologies/graphicsdemos
 						popd
 						echo Copying
-						copy "%unitytemp%/graphicsdemos/NativeRenderingPlugin/PluginSource/source/Unity/*.h" AmfUnityPlugin/source/Unity
+						xcopy /Y "%unitytemp%/graphicsdemos/NativeRenderingPlugin/PluginSource/source/Unity/*.h" source/Unity
 						echo Removing %unitytemp%
 						rd /s /q "%unitytemp%"
 					)
