@@ -67,8 +67,8 @@ def executeBuild(String target, Map options)
 		}
 		dir("Bin/VideoPlaybackSample")
 		{
-			echo "stash includes: 'win64', name: 'sample_1'"
-			stash includes: 'win64', name: 'sample_1'
+			echo "stash includes: 'win64/**', name: 'sample_1'"
+			stash includes: 'win64/**', name: 'sample_1'
 		}
     }
     echo "-----------------------------------------end----------------------------------------------------"
