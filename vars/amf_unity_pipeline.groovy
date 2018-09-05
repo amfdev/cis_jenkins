@@ -65,11 +65,6 @@ def executeBuild(String target, Map options)
 			echo "stash includes: '**', name: 'sample'"
 			stash includes: '**', name: 'sample'
 		}
-		dir("Bin/VideoPlaybackSample")
-		{
-			echo "stash includes: 'win64/**', name: 'sample_1'"
-			stash includes: 'win64/**', name: 'sample_1'
-		}
     }
     echo "-----------------------------------------end----------------------------------------------------"
 }
@@ -91,10 +86,6 @@ def executeDeploy(Map configMap, Map options)
 	dir("Sample")
 	{
 		unstash('sample')
-	}
-	dir("sample_1")
-	{
-		unstash('sample_1')
 	}
 
     echo "-----------------------------------------end----------------------------------------------------"
