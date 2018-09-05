@@ -62,7 +62,9 @@ def executeBuild(String target, Map options)
 						hg clone https://bitbucket.org/Unity-Technologies/graphicsdemos
 						popd
 						echo Copying
-						copy "%unitytemp%/graphicsdemos/NativeRenderingPlugin/PluginSource/source/Unity/*.h" source/Unity
+						copy "%unitytemp%/graphicsdemos/NativeRenderingPlugin/PluginSource/source/Unity/*.h" AmfUnityPlugin/source/Unity
+						echo Removing %unitytemp%
+						rd /s /q "%unitytemp%"
 					)
 				) else (
 					echo Aborting, HG binary not found.
