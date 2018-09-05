@@ -62,7 +62,7 @@ def executeBuild(String target, Map options)
 						hg clone https://bitbucket.org/Unity-Technologies/graphicsdemos
 						popd
 						echo Copying
-						xcopy /Y "%unitytemp%/graphicsdemos/NativeRenderingPlugin/PluginSource/source/Unity/*.h" source/Unity
+						copy "%unitytemp%/graphicsdemos/NativeRenderingPlugin/PluginSource/source/Unity/*.h" source/Unity
 						echo Removing %unitytemp%
 						rd /s /q "%unitytemp%"
 					)
