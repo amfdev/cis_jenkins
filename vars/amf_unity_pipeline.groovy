@@ -22,7 +22,9 @@ def buildPluginHelper(String target)
 			::build AmfUnityPlugin
 			%msbuild% AmfUnityPlugin.sln /property:Configuration=Release /property:Platform=x64 /p:PlatformToolset=%toolset% /m
 		'''
-		Runtime.runtime.exec("makeDist.cmd")
+		bat '''
+			call makeDist.cmd
+		'''
 	}
 }
 
@@ -30,7 +32,9 @@ def buildSamplesHelper(String target)
 {
 	dir("Scripts/Samples")
 	{
-		Runtime.runtime.exec("build_samples.cmd")
+		bat '''
+			call build_samples.cmd
+		'''
 	}
 }
 
@@ -42,9 +46,9 @@ def executeBuild(String target, Map options)
 		cis_checkout_scm('master', "https://github.com/amfdev/Unity_dev.git")
 		dir("Scripts")
 		{
-		bat '''
-			call fetch_all.bat
-		'''
+			bat '''
+				call fetch_all.bat
+			'''
 		}
 		buildPluginHelper(target)
 		buildSamplesHelper(target)
