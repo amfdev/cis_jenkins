@@ -35,8 +35,8 @@ def buildSamplesHelper(String target)
 		bat '''
 			call makeDist.cmd
 
-			call dist2Proj.cmd /../../Samples/VideoPlayBackSample
-			call build_unity_project.bat /../../Samples/VideoPlayBackSample
+			call dist2Proj.cmd %cd%/../../Samples/VideoPlayBackSample
+			call build_unity_project.bat %cd%/../../Samples/VideoPlayBackSample
 		'''
 	}
 }
