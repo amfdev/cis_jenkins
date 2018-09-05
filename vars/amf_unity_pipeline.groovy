@@ -1,7 +1,7 @@
 def buildPluginHelper(String target)
 {
 	echo "build AMF"
-	dir("Unity/UnityIntegrations/AmfUnityPlugin/source/AMF/amf/public/samples")
+	dir("UnityIntegrations/AmfUnityPlugin/source/AMF/amf/public/samples")
 	{
 		bat '''
 			set msbuild="C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/MSBuild/15.0/Bin/msbuild.exe"
@@ -13,7 +13,7 @@ def buildPluginHelper(String target)
 		'''
 	}
 	echo "build AMF"
-	dir("Unity/UnityIntegrations/AmfUnityPlugin")
+	dir("UnityIntegrations/AmfUnityPlugin")
 	{
 		bat '''
 			set msbuild="C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/MSBuild/15.0/Bin/msbuild.exe"
@@ -28,7 +28,7 @@ def buildPluginHelper(String target)
 
 def buildSamplesHelper(String target)
 {
-	dir("Unity/Scripts/Samples")
+	dir("Scripts/Samples")
 	{
 		Runtime.runtime.exec("build_samples.cmd")
 	}
@@ -76,12 +76,12 @@ def executeBuild(String target, Map options)
 		}
 		buildPluginHelper(target)
 		buildSamplesHelper(target)
-		dir("Unity/Bin")
+		dir("Bin")
 		{
 			echo "stash includes:  'Dist/*', name: 'dist'"
 			stash includes:  'Dist/*', name: 'dist'
 		}
-		dir("Unity/Bin/VideoPlaybackSample/win64")
+		dir("Bin/VideoPlaybackSample/win64")
 		{
 			echo "stash includes: '*', name: 'sample'"
 			stash includes: '*', name: 'sample'
