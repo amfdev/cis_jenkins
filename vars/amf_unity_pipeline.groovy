@@ -30,7 +30,7 @@ def buildPluginHelper(String target)
 
 def buildSamplesHelper(String target)
 {
-	dir("Scripts/Samples")
+	dir("Scripts")
 	{
 		bat '''
 			call build_samples.cmd
