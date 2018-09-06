@@ -9,7 +9,7 @@ def buildHelper(String target)
 
 def executeBuild(String target, Map options)
 {
-    echo "executeBuild ${target}"
+    echo "-------------------------------------executeBuild ${target}-------------------------------------"
     
     //build project
     dir(options['projectName'])
@@ -40,10 +40,13 @@ def executeBuild(String target, Map options)
         bat "echo ${target} > testout.txt"
         stash includes: '**/*', name: "app-${target}"
     }
+	echo "-----------------------------------------end----------------------------------------------------"
 }
 
 def executeTests(String target, String profile, Map options)
 {
+	echo "-------------------------------------executeTests ${target}-------------------------------------"
+    
     dir(target)
     {
         unstash "app-${target}"
@@ -53,10 +56,12 @@ def executeTests(String target, String profile, Map options)
             bat "ffmpeg.exe -version >> ${CIS_LOG} 2>&1"
         }
     }
+	echo "-----------------------------------------end----------------------------------------------------"
 }
 
 def executeDeploy(Map configMap, Map options)
 {
+    echo "-------------------------------------executeDeploy-------------------------------------"
     configMap.each()
     {
         dir(it.key)
@@ -69,6 +74,7 @@ def executeDeploy(Map configMap, Map options)
             }
         }
     }
+	echo "-----------------------------------------end----------------------------------------------------"
 }
 
 def call(Map userOptions = [:]
