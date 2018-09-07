@@ -12,6 +12,10 @@ def executeBuild(String target, Map options)
     echo "-------------------------------------executeBuild ${target}-------------------------------------"
     
     //build project
+	dir(options['projectName'])
+    {
+		deleteDir()
+	}
 	bat '''
 			git clone https://github.com/amfdev/FFmpeg_dev.git FFmpeg
 		'''
@@ -29,7 +33,7 @@ def executeBuild(String target, Map options)
 		{
 			cis_checkout_scm("master", "https://github.com/GPUOpen-LibrariesAndSDKs/AMF.git")
 			bat '''
-				cp -R /amf/public/include/* ../AMF/include/AMF
+				xcopy -R /amf/public/include/* ../AMF/include/AMF /S /E
 			'''
 			deleteDir()
 		}
