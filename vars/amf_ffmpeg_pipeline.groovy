@@ -17,7 +17,7 @@ def executeBuild(String target, Map options)
 		cis_checkout_scm("master", "https://github.com/amfdev/FFmpeg_dev.git")
 		dir("Sources")
 		{
-			cis_checkout_scm(options['projectBranch'], options['projectRepo'])
+			cis_checkout_scm("master", "https://github.com/amfdev/FFmpeg.git")
 		}
 		dir("AMF/include/AMF")
 		{
