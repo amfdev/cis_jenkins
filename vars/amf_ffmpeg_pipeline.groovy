@@ -33,7 +33,7 @@ def executeBuild(String target, Map options)
 		{
 			cis_checkout_scm("master", "https://github.com/GPUOpen-LibrariesAndSDKs/AMF.git")
 			bat '''
-				wsl cp -r "%cd%/amf/public/include/*" "%cd%/../../AMF/include/AMF/"
+				wsl cp -r "%cd%/amf/public/include/*" "%cd%/../../AMF/include/AMF"
 			'''
 			deleteDir()
 		}
