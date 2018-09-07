@@ -15,10 +15,10 @@ def executeBuild(String target, Map options)
     dir(options['projectName'])
     {
 		cis_checkout_scm("master", "https://github.com/amfdev/FFmpeg_dev.git")
-		dir("Sources")
-		{
-			cis_checkout_scm("master", "https://github.com/amfdev/FFmpeg.git")
-		}
+		bat '''
+			git clone https://github.com/amfdev/FFmpeg.git ../Sources
+		'''
+		
 		dir("AMF/include/AMF")
 		{
 			
