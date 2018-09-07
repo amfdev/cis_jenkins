@@ -12,11 +12,13 @@ def executeBuild(String target, Map options)
     echo "-------------------------------------executeBuild ${target}-------------------------------------"
     
     //build project
+	bat '''
+			git clone https://github.com/amfdev/FFmpeg_dev.git FFmpeg
+		'''
     dir(options['projectName'])
     {
-		cis_checkout_scm("master", "https://github.com/amfdev/FFmpeg_dev.git")
 		bat '''
-			git clone https://github.com/amfdev/FFmpeg.git ../Sources
+			git clone https://github.com/amfdev/FFmpeg.git Sources
 		'''
 		
 		dir("AMF/include/AMF")
