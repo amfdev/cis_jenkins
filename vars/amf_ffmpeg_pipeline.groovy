@@ -27,7 +27,9 @@ def executeBuild(String target, Map options)
 		
 		dir("AMF/include/AMF")
 		{
-			
+			bat '''
+				echo %cd%
+			'''
 		}
 		dir("scripts/AMF")
 		{
