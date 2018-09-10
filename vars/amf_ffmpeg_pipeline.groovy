@@ -81,7 +81,7 @@ def call(Map userOptions = [:]
         ) {
 
     Map options = [
-        config:'mingw:test',
+        config:'mingw_gcc_x64:test',
         
         projectGroup:'AMF',
 
