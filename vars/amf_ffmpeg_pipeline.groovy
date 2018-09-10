@@ -25,14 +25,11 @@ def executeBuild(String target, Map options)
 		'''
     dir(options['projectName'])
     {
-		bat '''
-			git clone https://github.com/amfdev/FFmpeg.git Sources
-		'''
-		
 		dir("scripts")
 		{
 			bat '''
 				wsl ./fetch_AMF.sh
+				wsl ./fetch_FFmpeg.sh
 			'''
 		}
 		buildHelper(target)
