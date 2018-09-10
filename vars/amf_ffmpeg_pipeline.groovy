@@ -12,6 +12,10 @@ def executeBuild(String target, Map options)
     echo "-------------------------------------executeBuild ${target}-------------------------------------"
     
     //build project
+	dir("thirdparty")
+	{
+		cis_checkout_scm('master', "https://github.com/amfdev/thirdparty.git")
+	}
 	dir(options['projectName'])
     {
 		deleteDir()
