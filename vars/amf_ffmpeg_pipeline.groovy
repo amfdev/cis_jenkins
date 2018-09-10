@@ -28,7 +28,7 @@ def executeBuild(String target, Map options)
 		dir("scripts")
 		{
 			bat '''
-				wsl ./fetch_AMF.sh"
+				wsl ./fetch_AMF.sh
 			'''
 		}
 		buildHelper(target)
