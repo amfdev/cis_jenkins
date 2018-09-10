@@ -25,22 +25,13 @@ def executeBuild(String target, Map options)
 			git clone https://github.com/amfdev/FFmpeg.git Sources
 		'''
 		
-		dir("AMF/include/AMF")
+		dir("scripts")
 		{
 			bat '''
-				echo %cd%
+				wsl ./fetch_AMF.sh"
 			'''
-		}
-		dir("scripts/AMF")
-		{
-			cis_checkout_scm("master", "https://github.com/GPUOpen-LibrariesAndSDKs/AMF.git")
-			bat '''
-				wsl cp -r "%cd%/amf/public/include/*" "%cd%/../../AMF/include/AMF"
-			'''
-			deleteDir()
 		}
 		buildHelper(target)
-		
     }
 
     dir("${options.projectName}_redist/${target}")
