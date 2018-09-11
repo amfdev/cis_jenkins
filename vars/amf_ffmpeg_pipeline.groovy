@@ -31,7 +31,7 @@ def executeBuild(String target, Map options)
 		buildHelper(target)
     }
 
-    dir(options['projectName'] + "_build-" + target+"-debug"))
+    dir(options['projectName'] + "_build-${target}-debug")
     {
         bat "echo ${target} > testout.txt"
         stash includes: '*.exe', name: "${target}-binaries"
