@@ -2,7 +2,7 @@
 def buildHelper(String target)
 {
 	bat"""
-		'./scripts/build.sh ${target} build debug'
+		wsl ./scripts/build.sh ${target} build debug
 	"""
 }
 
