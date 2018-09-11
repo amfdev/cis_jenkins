@@ -31,7 +31,7 @@ def executeBuild(String target, Map options)
 		buildHelper(target)
     }
 
-    dir(options['projectName'] + "_build-${target}-debug")
+    dir(options['projectName'] + "/_build-${target}-debug")
     {
         bat "echo ${target} > testout.txt"
         stash includes: '*.exe', name: "${target}-binaries"
@@ -61,12 +61,10 @@ def executeDeploy(Map configMap, Map options)
     {
         dir(it.key)
         {
-            unstash "app-${it.key}"
-            dir('bin')
-            {
-                bat "echo deploy ${it.key} >> ${CIS_LOG} 2>&1"
-                bat "ffmpeg.exe -version >> ${CIS_LOG} 2>&1"
-            }
+            unstash "${it.key}-binaries"
+            unstash "${it.key}-libs"
+            bat "echo deploy ${it.key} >> ${CIS_LOG} 2>&1"
+            bat "ffmpeg.exe -version >> ${CIS_LOG} 2>&1"
         }
     }
 	echo "-----------------------------------------end----------------------------------------------------"
