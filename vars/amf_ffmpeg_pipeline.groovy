@@ -2,7 +2,7 @@
 def buildHelper(String target)
 {
 	bat"""
-		ubuntu run sh -c './build.sh ${target}  build debug' >> ${CIS_LOG} 2>&1
+		'./scripts/build.sh ${target} build debug'
 	"""
 }
 
