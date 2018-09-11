@@ -21,7 +21,7 @@ def executeBuild(String target, Map options)
 		cis_checkout_scm('master', "https://github.com/amfdev/thirdparty.git")
 	}
 	bat '''
-			git clone https://github.com/amfdev/FFmpeg_dev.git &{options['projectName']}
+			git clone https://github.com/amfdev/FFmpeg_dev.git FFmpeg
 		'''
     dir(options['projectName'])
     {
