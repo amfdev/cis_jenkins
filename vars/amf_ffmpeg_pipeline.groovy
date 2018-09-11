@@ -2,7 +2,7 @@
 def buildHelper(String target)
 {
 	bat"""
-		ubuntu run sh -c './build.sh ${target}' >> ${CIS_LOG} 2>&1
+		ubuntu run sh -c './build.sh ${target}  build debug' >> ${CIS_LOG} 2>&1
 	"""
 }
 
@@ -81,7 +81,7 @@ def call(Map userOptions = [:]
         ) {
 
     Map options = [
-        config:'mingw_gcc_x64 build debug:test',
+        config:'mingw_gcc_x64:test',
         
         projectGroup:'AMF',
 
