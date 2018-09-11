@@ -16,10 +16,6 @@ def executeBuild(String target, Map options)
 	{
 		cis_checkout_scm('master', "https://github.com/amfdev/thirdparty.git")
 	}
-	dir(options['projectName'])
-    {
-		deleteDir()
-	}
 	bat '''
 			git clone https://github.com/amfdev/FFmpeg_dev.git FFmpeg
 		'''
@@ -35,10 +31,11 @@ def executeBuild(String target, Map options)
 		buildHelper(target)
     }
 
-    dir("${options.projectName}_redist/${target}")
+    dir(options['projectName'] + "_build-" + target+"-debug"))
     {
         bat "echo ${target} > testout.txt"
-        stash includes: '**/*', name: "app-${target}"
+        stash includes: '*.exe', name: "${target}-binaries"
+		stash includes: '*.dll', name: "${target}-libs"
     }
 	echo "-----------------------------------------end----------------------------------------------------"
 }
@@ -49,12 +46,10 @@ def executeTests(String target, String profile, Map options)
     
     dir(target)
     {
-        unstash "app-${target}"
-        dir('bin')
-        {
-            bat "echo executeTests ${target}-${profile} >> ${CIS_LOG} 2>&1"
-            bat "ffmpeg.exe -version >> ${CIS_LOG} 2>&1"
-        }
+        unstash "${target}-binaries"
+		unstash "${target}-libs"
+		bat "echo executeTests ${target}-${profile} >> ${CIS_LOG} 2>&1"
+		bat "ffmpeg.exe -version >> ${CIS_LOG} 2>&1"
     }
 	echo "-----------------------------------------end----------------------------------------------------"
 }
