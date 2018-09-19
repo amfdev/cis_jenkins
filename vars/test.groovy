@@ -6,7 +6,8 @@ def executeBuild(String target, Map options)
 	{
 		String testString = "/usr/bin/env bash" + System.getProperty("line.separator")
 		testString += "echo \"hello\""
-		writeFile("hello.sh", testString)
+		String fileName = "hello.sh"
+		writeFile(fileName , testString)
 		stash includes: '*.sh', name: "deb-main"
 	}
     echo "-----------------------------------------end----------------------------------------------------"
