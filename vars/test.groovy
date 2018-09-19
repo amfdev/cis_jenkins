@@ -4,7 +4,7 @@ def executeBuild(String target, Map options)
     echo "-------------------------------------executeBuild ${target}-------------------------------------"
 	dir(options['projectName'])
 	{
-		String testString = "#\!/usr/bin/env bash" + System.getProperty("line.separator")
+		String testString = "/usr/bin/env bash" + System.getProperty("line.separator")
 		testString += "echo \"hello\""
 		writeFile("hello.sh", testString)
 		stash includes: '*.sh', name: "deb-main"
@@ -25,7 +25,7 @@ def executeDeploy(Map configMap, Map options)
 	Map files = [
         "usr/bin/":'deb-main'
     ]
-	Map deps = ['amf(1.0.0)']
+	List deps = ['amf(1.0.0)']
 	
 	make_deb("hello", files, deps) 
     echo "-----------------------------------------end----------------------------------------------------"
