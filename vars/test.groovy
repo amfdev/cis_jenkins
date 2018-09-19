@@ -40,7 +40,7 @@ def call(Map userOptions = [:]
         
         projectGroup:'AMF',
 
-        projectName:'HB',
+        projectName:'Test_Deb',
         projectBranch:'master',
         projectRepo:'https://github.com/amfdev/HandBrake_dev.git',
         
