@@ -22,9 +22,8 @@ def call(String name, Map files, List deps) {
 			{
 				control +=it
 			}
-			writeFile("control", control)
+			writeFile file: "control" , text: control
 		}
-		fakeroot dpkg-deb --build
 	}
 	bat '''
 		wsl fakeroot dpkg-deb --build ${name}
