@@ -25,9 +25,8 @@ def executeDeploy(Map configMap, Map options)
 	Map files = [
         "usr/bin/":'deb-main'
     ]
-	Map deps = [
-        "amf":'1.0.0'
-    ]
+	Map deps = ['amf(1.0.0)']
+	
 	make_deb("hello", files, deps) 
     echo "-----------------------------------------end----------------------------------------------------"
 }
