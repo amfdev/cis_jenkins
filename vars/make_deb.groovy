@@ -1,4 +1,4 @@
-def call(String name, Map files, Map deps) {
+def call(String name, Map files, List deps) {
 	dir(name)
 	{
 		files.each()
@@ -10,19 +10,19 @@ def call(String name, Map files, Map deps) {
 		}
 		dir("DEBIAN")
 		{
-			File file = new File("control")
-			file.write "Package: " + name + System.getProperty("line.separator")
-			file << "Version: 1.0-1" + System.getProperty("line.separator")
-			file << "Maintainer: name >mail.gmail.com" + System.getProperty("line.separator")
-			file << "Architecture: all" + System.getProperty("line.separator")
-			file << "Section: misc" + System.getProperty("line.separator")
-			file << "Description: short description" + System.getProperty("line.separator")
-			file << " long description line 1. line2" + System.getProperty("line.separator")
-			file << "Depends: "
+			String control = "Package: " + name + System.getProperty("line.separator")
+			control +="Version: 1.0-1" + System.getProperty("line.separator")
+			control +="Maintainer: name >mail.gmail.com" + System.getProperty("line.separator")
+			control +="Architecture: all" + System.getProperty("line.separator")
+			control +="Section: misc" + System.getProperty("line.separator")
+			control +="Description: short description" + System.getProperty("line.separator")
+			control +=" long description line 1. line2" + System.getProperty("line.separator")
+			control +="Depends: "
 			deps.each()
 			{
-				file << it.key <<"("<< it.value << "),"
+				control +=it
 			}
+			writeFile("control", control)
 		}
 		fakeroot dpkg-deb --build
 	}

@@ -4,9 +4,9 @@ def executeBuild(String target, Map options)
     echo "-------------------------------------executeBuild ${target}-------------------------------------"
 	dir(options['projectName'])
 	{
-		File file = new File("hello.sh")
-		file.write "#!/usr/bin/env bash" + System.getProperty("line.separator")
-		file << "echo \"hello\""
+		String testString = "#!/usr/bin/env bash" + System.getProperty("line.separator")
+		testString += "echo \"hello\""
+		writeFile("hello.sh", testString)
 		stash includes: '*.sh', name: "deb-main"
 	}
     echo "-----------------------------------------end----------------------------------------------------"
