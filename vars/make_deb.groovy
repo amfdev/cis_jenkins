@@ -15,6 +15,9 @@ def call(Map userInfo = [:], Map files, List deps) {
         info[it.key]=it.value
     }
 	
+	String name = info['name']
+	String fullName = name + "_" + info['Version'] + "_" + info['Architecture']
+	
 	dir(name)
 	{
 		files.each()
@@ -50,8 +53,7 @@ def call(Map userInfo = [:], Map files, List deps) {
 	sh '''
 		fakeroot dpkg-deb --build ${name}
 	'''
-	String name = info['name']
-	String fullName = name + "_" + info['Version'] + "_" + info['Architecture']
+	
 	sh '''
 		mv ${name}.deb ${fullName}.deb
 	'''
