@@ -24,11 +24,15 @@ def executeDeploy(Map configMap, Map options)
 {
 	echo "-------------------------------------executeDeploy-------------------------------------"
 	Map files = [
-        "usr/bin/":'deb-main'
+        "deb-main":'usr/bin/'
     ]
 	List deps = ['amf(1.0.0)']
 	
-	make_deb("hello", files, deps) 
+	Map info = [
+        Name:'test'
+		]
+	
+	make_deb(info, files, deps) 
     echo "-----------------------------------------end----------------------------------------------------"
 }
 
@@ -36,7 +40,7 @@ def call(Map userOptions = [:]
         ) {
 
     Map options = [
-        config:'mingw_gcc_x64:test',
+        config:'mingw_gcc_x64:LinuxTest',
         
         projectGroup:'AMF',
 
