@@ -15,7 +15,7 @@ def call(Map userInfo = [:], Map files, List deps) {
         info[it.key]=it.value
     }
 	
-	String name = info['name']
+	String name = info['Name']
 	String fullName = name + "_" + info['Version'] + "_" + info['Architecture']
 	
 	dir(name)
