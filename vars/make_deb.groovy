@@ -51,9 +51,13 @@ def call(Map userInfo = [:], Map files, List deps, String copyright = "") {
 				control += System.getProperty("line.separator")
 			}
 			writeFile file: "control" , text: control
-			if (copyright != "")
+		}
+		if (copyright != "")
+		{
+			dir( "/usr/share/doc/" + name + "/copyright")
+			{
 				writeFile file: "copyright" , text: copyright
-			
+			}
 		}
 	}
 	sh 'fakeroot dpkg-deb --build ' + name
