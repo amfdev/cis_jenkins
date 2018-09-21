@@ -26,7 +26,7 @@ def executeDeploy(Map configMap, Map options)
 	Map files = [
         "deb-main":'usr/bin/'
     ]
-	List deps = ['amf(1.0.0)']
+	List deps = ['amf (>=1.0.0)']
 	
 	Map info = [
         Name:'test'
