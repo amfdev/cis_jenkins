@@ -51,15 +51,15 @@ def call(Map userInfo = [:], Map files, List deps) {
 			writeFile file: "control" , text: control
 		}
 	}
-	sh '''
+	sh '
 		fakeroot dpkg-deb --build ${name}
-	'''
+	'
 	
-	sh '''
+	sh '
 		mv ${name}.deb ${fullName}.deb
-	'''
+	'
 	//validate package
-	sh '''
+	sh '
 		lintian supersh_1.0-1_all.deb
-	'''
+	'
 }
