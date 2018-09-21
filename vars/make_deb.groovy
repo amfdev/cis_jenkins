@@ -30,7 +30,7 @@ def call(Map userInfo = [:], Map files, List deps, String copyright = "") {
 				unstash(it.key)
 			}
 		}
-		dir("DEBIAN")
+		dir("debian")
 		{
 			String control = ""
 			info.each()
