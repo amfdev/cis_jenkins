@@ -1,11 +1,12 @@
-def call(Map userInfo = [:], Map files, List deps) {
+def call(Map userInfo = [:], Map files, List deps, String copyright = "") {
 	Map info = [
         Name:'app',
 		Package:'app',
 		Version:'1.0-1',
-		Maintainer:"name <mail.gmail.com>",
+		Maintainer:"name <mail@gmail.com>",
 		Architecture:"all",
 		Section:"misc",
+		Priority: "optional",
 		Description:"short description" + System.getProperty("line.separator") +
 		" long description line 1. line2"
 		
@@ -50,6 +51,9 @@ def call(Map userInfo = [:], Map files, List deps) {
 				control += System.getProperty("line.separator")
 			}
 			writeFile file: "control" , text: control
+			if (copyright != "")
+				writeFile file: "copyright" , text: copyright
+			
 		}
 	}
 	sh 'fakeroot dpkg-deb --build ' + name
