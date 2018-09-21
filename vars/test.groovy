@@ -33,7 +33,7 @@ def executeDeploy(Map configMap, Map options)
 		Package:'test'
 		]
 	
-	make_deb(info, files, deps) 
+	make_deb(info, files, deps, "hello") 
     echo "-----------------------------------------end----------------------------------------------------"
 }
 
