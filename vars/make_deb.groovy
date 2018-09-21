@@ -54,7 +54,7 @@ def call(Map userInfo = [:], Map files, List deps, String copyright = "") {
 		}
 		if (copyright != "")
 		{
-			dir( "/usr/share/doc/" + name + "/copyright")
+			dir( "/usr/share/doc/" + name)
 			{
 				writeFile file: "copyright" , text: copyright
 			}
