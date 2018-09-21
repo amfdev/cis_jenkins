@@ -18,6 +18,7 @@ def call(Map userInfo = [:], Map files, List deps) {
 	String name = info['Name']
 	String fullName = name + "_" + info['Version'] + "_" + info['Architecture']
 	
+	echo "###### Create deb: ${name} (${fullName}) ###############################"
 	dir(name)
 	{
 		files.each()
