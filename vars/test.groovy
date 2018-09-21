@@ -8,7 +8,7 @@ def executeBuild(String target, Map options)
 		testString += "echo \"hello\""
 		String fileName = 
 		writeFile file: "hello" , text: testString
-		stash includes: '*.sh', name: "deb-main"
+		stash includes: '*', name: "deb-main"
 	}
     echo "-----------------------------------------end----------------------------------------------------"
 }
