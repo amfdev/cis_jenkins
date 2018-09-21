@@ -53,7 +53,7 @@ def call(Map userInfo = [:], Map files, List deps) {
 		}
 	}
 	sh 'fakeroot dpkg-deb --build ' + name
-	sh 'mv ${name}.deb ' + fullName + '.deb'
+	sh 'mv ' + name + '.deb ' + fullName + '.deb'
 	//validate package
 	sh 'lintian ' + fullName + '.deb'
 }
