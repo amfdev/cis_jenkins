@@ -52,16 +52,16 @@ def call(Map userOptions = [:]
         'test.function':this.&executeTests,
         'deploy.function':this.&executeDeploy,
 
-        'build.tag':'test',
+        'build.tag':'LinuxTest',
         'build.platform.tag.mingw_gcc_x64':'mingw',
         'build.platform.tag.mingw_gcc_x86':'mingw',
 
-        'test.tag':'test',
+        'test.tag':'LinuxTest',
         'test.cleandir':true,
         'test.platform.tag.mingw_gcc_x64':'LinuxTest',
         'test.platform.tag.mingw_gcc_x86':'LinuxTest',
         
-        'deploy.tag':'test',
+        'deploy.tag':'LinuxTest',
 		'deploy.platform.tag.mingw_gcc_x64':'LinuxTest',
 		'deploy.platform.tag.mingw_gcc_x86':'LinuxTest',
         'deploy.cleandir':true
