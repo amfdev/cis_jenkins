@@ -33,7 +33,7 @@ def call(Map userInfo = [:], Map files, List deps) {
 			String control = ""
 			info.each()
 			{
-				control += it.key + " " + it.value + System.getProperty("line.separator")
+				control += it.key + ": " + it.value + System.getProperty("line.separator")
 			}
 			if (deps.size() > 0)
 			{
