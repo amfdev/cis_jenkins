@@ -29,7 +29,8 @@ def executeDeploy(Map configMap, Map options)
 	List deps = ['amf (>=1.0.0)']
 	
 	Map info = [
-        Name:'test'
+        Name:'test',
+		Package:'test'
 		]
 	
 	make_deb(info, files, deps) 

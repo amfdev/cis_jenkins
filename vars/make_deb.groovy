@@ -1,6 +1,7 @@
 def call(Map userInfo = [:], Map files, List deps) {
 	Map info = [
         Name:'app',
+		Package:'app'
 		Version:'1.0-1',
 		Maintainer:"name <mail.gmail.com>",
 		Architecture:"all",
